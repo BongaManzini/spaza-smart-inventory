@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spaza-Smart Inventory Predictor | Informal Retail Decision Support</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-emerald-500/20 selection:text-emerald-400">
+
+  <!-- Ambient lighting -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute -top-32 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-amber-500/10 rounded-full blur-[150px]"></div>
+    <div class="absolute -bottom-40 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Header -->
+    <header class="border-b border-slate-800 pb-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2.5 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Informal Economy Decision-Support System
+          </span>
+          <span class="text-xs font-mono text-slate-400 hidden sm:inline">SA Informatics Master Portfolio</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+          <span>🛒 Spaza-Smart Inventory Predictor</span>
+        </h1>
+        <p class="text-slate-400 text-sm sm:text-base mt-1 max-w-2xl font-light">
+          Decision-support dashboard for township Spaza shops and micro-retailers. Predicts inventory stockouts by correlating staple grocery turnover with the monthly South African Social Security Agency (SASSA) payout cycle.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/BongaManzini/spaza-smart-inventory" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-xs font-mono flex items-center gap-2 transition-all">
+          <i data-lucide="github" class="w-4 h-4"></i>
+          <span>GitHub</span>
+        </a>
+        <a href="../" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-mono flex items-center gap-1.5 transition-all">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          <span>Portfolio</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- SASSA Grant Simulation Mode Toggle -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-amber-950/40 border border-amber-500/30 rounded-3xl p-6 sm:p-7 mb-8 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase text-amber-400 font-semibold tracking-wider block mb-1">
+            Simulate Liquidity & Demand Cycle:
+          </span>
+          <h3 class="text-lg sm:text-xl font-bold text-white">
+            Current Calendar Context: <span id="cycle-label" class="text-amber-300">Days 1–6 (SASSA Grant Payout Week)</span>
+          </h3>
+          <p class="text-xs text-slate-300 font-light mt-1 max-w-xl">
+            During SASSA disbursement (Older Persons, Disability, Child Support & SRD grants), cash velocity in township economies increases by <strong>300% to 450%</strong>. Maize meal, cooking oil, and rice fly off shelves within 48 hours.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+          <button onclick="setSimulationMode(true)" id="btn-surge" class="px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+            <span>SASSA Payout Week (Surge)</span>
+          </button>
+          <button onclick="setSimulationMode(false)" id="btn-normal" class="px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all">
+            Mid-Month Normal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory SKUs Dashboard Table -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
+          <h3 class="text-lg font-bold text-white">Staple Product Stockout Forecast</h3>
+        </div>
+        <span class="text-xs font-mono text-slate-400">Lead Time: 1–2 days from Cash & Carry</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="p-3">SKU & Item</th>
+              <th class="p-3">Current Stock</th>
+              <th class="p-3">Daily Velocity</th>
+              <th class="p-3">Estimated Runout</th>
+              <th class="p-3">Restock Order</th>
+              <th class="p-3 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-table-body" class="divide-y divide-slate-800/60">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Business Intelligence Takeaway -->
+    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+          <i data-lucide="lightbulb" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white mb-2">Informatics Value for the Informal Economy</h3>
+          <p class="text-sm text-slate-300 font-light leading-relaxed">
+            South African Spaza shop owners lose an estimated <strong>18% of their monthly revenue</strong> by running out of stock of basic staples (maize meal, cooking oil, bread) between the 1st and 5th of the month. Traditional ERP software is prohibitively expensive and complicated. Spaza-Smart demonstrates how lean algorithmic heuristics running on basic mobile web or USSD empower micro-entrepreneurs with predictive purchasing power.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono gap-4">
+      <p>© Bonga Manzini • BSc Informatics (UNISA) • Informal Business Intelligence</p>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/BongaManzini/spaza-smart-inventory" target="_blank" class="hover:text-emerald-400 transition-colors">GitHub Repository</a>
+        <span>•</span>
+        <a href="https://bongamanzini.github.io/portfolio/" target="_blank" class="hover:text-emerald-400 transition-colors">Portfolio</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let isSurge = true;
+
+    const INVENTORY = [
+      { sku: 'MZ-125', name: 'White Star Super Maize Meal (12.5kg)', stock: 8, unit: 'Bags', baseSales: 4.2, surgeMult: 4.5, cost: 125, sell: 155 },
+      { sku: 'BR-ALB', name: 'Albany Superior Sliced White Bread (700g)', stock: 15, unit: 'Loaves', baseSales: 35.0, surgeMult: 1.8, cost: 17.5, sell: 21 },
+      { sku: 'CO-02L', name: 'Sunfoil Sunflower Cooking Oil (2L)', stock: 6, unit: 'Bottles', baseSales: 3.0, surgeMult: 3.8, cost: 64, sell: 79.9 },
+      { sku: 'SG-02K', name: 'Huletts White Sugar (2kg)', stock: 10, unit: 'Packs', baseSales: 5.0, surgeMult: 3.0, cost: 48, sell: 59.9 },
+      { sku: 'RC-10K', name: 'Tastic Parboiled Rice (10kg)', stock: 5, unit: 'Bags', baseSales: 2.8, surgeMult: 3.6, cost: 175, sell: 215 },
+      { sku: 'MK-06P', name: 'First Choice Long Life Milk (6x1L)', stock: 4, unit: 'Boxes', baseSales: 3.5, surgeMult: 2.5, cost: 98, sell: 122 },
+      { sku: 'PL-400', name: 'Lucky Star Pilchards in Tomato (400g)', stock: 24, unit: 'Cans', baseSales: 12.0, surgeMult: 2.8, cost: 22.5, sell: 27.5 }
+    ];
+
+    function renderInventory() {
+      const tbody = document.getElementById('inventory-table-body');
+
+      tbody.innerHTML = INVENTORY.map(item => {
+        const dailyVelocity = (item.baseSales * (isSurge ? item.surgeMult : 1.0)).toFixed(1);
+        const daysLeft = (item.stock / dailyVelocity).toFixed(1);
+        const isUrgent = daysLeft < 2.0;
+        const reorderUnits = Math.max(0, Math.round((dailyVelocity * 6) - item.stock));
+
+        return `
+          <tr class="hover:bg-slate-900/50 transition-colors">
+            <td class="p-3">
+              <span class="text-white font-bold block">${item.name}</span>
+              <span class="text-[10px] text-slate-500">SKU: ${item.sku}</span>
+            </td>
+            <td class="p-3 text-slate-200">
+              <span class="font-bold text-sm ${item.stock <= 5 ? 'text-rose-400' : 'text-slate-200'}">${item.stock}</span>
+              <span class="text-slate-500 text-[10px]">${item.unit}</span>
+            </td>
+            <td class="p-3 text-slate-300">
+              ${dailyVelocity} ${item.unit}/day
+              ${isSurge ? '<span class="text-amber-400 text-[9px] block">⚡ SASSA Surge</span>' : ''}
+            </td>
+            <td class="p-3">
+              <span class="font-bold ${isUrgent ? 'text-rose-400' : 'text-emerald-400'}">
+                ${daysLeft} days
+              </span>
+            </td>
+            <td class="p-3 text-slate-200">
+              ${reorderUnits > 0 ? `<strong>${reorderUnits}</strong> ${item.unit}` : '<span class="text-slate-500">Stock Adequate</span>'}
+            </td>
+            <td class="p-3 text-right">
+              ${isUrgent ? `
+                <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
+                  🚨 REORDER NOW
+                </span>
+              ` : `
+                <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  ✅ Stock OK
+                </span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function setSimulationMode(surge) {
+      isSurge = surge;
+      const surgeBtn = document.getElementById('btn-surge');
+      const normalBtn = document.getElementById('btn-normal');
+      const label = document.getElementById('cycle-label');
+
+      if (isSurge) {
+        surgeBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
+        normalBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
+        label.textContent = 'Days 1–6 (SASSA Grant Payout Week)';
+        label.className = 'text-amber-300 font-bold';
+      } else {
+        normalBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
+        surgeBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
+        label.textContent = 'Mid-Month (Normal Baseline Demand)';
+        label.className = 'text-emerald-300 font-bold';
+      }
+
+      renderInventory();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderInventory();
+    });
+  </script>
+</body>
+</html>
