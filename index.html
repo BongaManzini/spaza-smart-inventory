@@ -3,169 +3,1190 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spaza-Smart Inventory Predictor | Informal Retail Decision Support</title>
+  <title>Spaza-Smart | Informal Retail Decision Engine & POS Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    /* Print Stylesheets */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #printable-area, #printable-area * {
+        visibility: visible;
+      }
+      #printable-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white !important;
+        color: black !important;
+      }
+      /* Thermal 80mm roll specific print */
+      .thermal-mode {
+        width: 78mm !important;
+        max-width: 78mm !important;
+        margin: 0 auto !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+      }
+      /* A4 Tax invoice specific print */
+      .a4-mode {
+        width: 100% !important;
+        max-width: 210mm !important;
+        margin: 0 auto !important;
+        padding: 15mm !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Thermal receipt jagged edge effect */
+    .receipt-paper {
+      background: #fafaf9;
+      color: #1c1917;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      position: relative;
+    }
+    .receipt-paper::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: radial-gradient(circle, transparent, transparent 50%, #fafaf9 50%, #fafaf9 100%);
+      background-size: 12px 12px;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-emerald-500/20 selection:text-emerald-400">
 
-  <!-- Ambient lighting -->
-  <div class="fixed inset-0 pointer-events-none z-0">
+  <!-- Ambient lighting backdrops -->
+  <div class="fixed inset-0 pointer-events-none z-0 no-print">
     <div class="absolute -top-32 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[140px]"></div>
     <div class="absolute top-1/2 -right-40 w-96 h-96 bg-amber-500/10 rounded-full blur-[150px]"></div>
     <div class="absolute -bottom-40 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px]"></div>
   </div>
 
-  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8">
-    <!-- Header -->
-    <header class="border-b border-slate-800 pb-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 no-print">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 mb-2">
           <span class="px-2.5 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Informal Economy Decision-Support System
+            Market-Ready Informal Retail Decision Platform
           </span>
-          <span class="text-xs font-mono text-slate-400 hidden sm:inline">SA Informatics Master Portfolio</span>
+          <span class="text-xs font-mono text-slate-400 hidden sm:inline">SA Informatics Master Suite</span>
         </div>
-        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
-          <span>🛒 Spaza-Smart Inventory Predictor</span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
+          <span>🛒 Spaza-Smart Retail Hub & Till POS</span>
         </h1>
-        <p class="text-slate-400 text-sm sm:text-base mt-1 max-w-2xl font-light">
-          Decision-support dashboard for township Spaza shops and micro-retailers. Predicts inventory stockouts by correlating staple grocery turnover with the monthly South African Social Security Agency (SASSA) payout cycle.
+        <p class="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl font-light">
+          Forecasting staple grocery stockouts using SASSA grant cycles, integrated with Card & Cash Till POS, thermal slip printing, expiry tracking, and wholesale purchasing.
         </p>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="https://github.com/BongaManzini/spaza-smart-inventory" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-xs font-mono flex items-center gap-2 transition-all">
-          <i data-lucide="github" class="w-4 h-4"></i>
+      <div class="flex flex-wrap items-center gap-2.5">
+        <!-- Quick stats tag -->
+        <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-mono">
+          <span class="text-slate-400">Cart Total: </span>
+          <span id="quick-cart-total" class="font-bold text-emerald-400">R0.00</span>
+        </div>
+
+        <button onclick="openModal('modal-add-product')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-mono flex items-center gap-1.5 transition-all">
+          <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Add SKU</span>
+        </button>
+
+        <a href="https://github.com/BongaManzini/spaza-smart-inventory" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-xs font-mono flex items-center gap-1.5 transition-all">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
           <span>GitHub</span>
-        </a>
-        <a href="../" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-mono flex items-center gap-1.5 transition-all">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-          <span>Portfolio</span>
         </a>
       </div>
     </header>
 
-    <!-- SASSA Grant Simulation Mode Toggle -->
-    <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-amber-950/40 border border-amber-500/30 rounded-3xl p-6 sm:p-7 mb-8 shadow-xl">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Main System Navigation Tabs -->
+    <nav class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 border-b border-slate-800/80 text-xs font-mono">
+      <button onclick="switchTab('tab-pos')" id="btn-tab-pos" class="tab-btn active px-4 py-2.5 rounded-xl font-bold bg-emerald-500 text-slate-950 flex items-center gap-2 transition-all">
+        <i data-lucide="credit-card" class="w-4 h-4"></i>
+        <span>1. Till POS & Card Payments</span>
+      </button>
+      <button onclick="switchTab('tab-inventory')" id="btn-tab-inventory" class="tab-btn px-4 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-2 transition-all">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+        <span>2. SASSA Stockout Forecast</span>
+      </button>
+      <button onclick="switchTab('tab-expiry')" id="btn-tab-expiry" class="tab-btn px-4 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-2 transition-all">
+        <i data-lucide="hourglass" class="w-4 h-4"></i>
+        <span>3. Expiry & Perishables</span>
+      </button>
+      <button onclick="switchTab('tab-weekly')" id="btn-tab-weekly" class="tab-btn px-4 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-2 transition-all">
+        <i data-lucide="truck" class="w-4 h-4"></i>
+        <span>4. Weekly Wholesaler Orders</span>
+      </button>
+      <button onclick="switchTab('tab-invoices')" id="btn-tab-invoices" class="tab-btn px-4 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-2 transition-all">
+        <i data-lucide="receipt" class="w-4 h-4"></i>
+        <span>5. Invoices & Slips Hub</span>
+      </button>
+      <button onclick="switchTab('tab-apps')" id="btn-tab-apps" class="tab-btn px-4 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-2 transition-all">
+        <i data-lucide="smartphone" class="w-4 h-4"></i>
+        <span>6. Mobile Kotlin & C++ Terminals</span>
+      </button>
+    </nav>
+
+    <!-- Global SASSA Cycle Banner (Affects demand simulation across all tabs) -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900/95 to-amber-950/30 border border-amber-500/30 rounded-2xl p-4 sm:p-5 mb-6 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 mt-0.5 border border-amber-500/20">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
         <div>
-          <span class="text-xs font-mono uppercase text-amber-400 font-semibold tracking-wider block mb-1">
-            Simulate Liquidity & Demand Cycle:
-          </span>
-          <h3 class="text-lg sm:text-xl font-bold text-white">
-            Current Calendar Context: <span id="cycle-label" class="text-amber-300">Days 1–6 (SASSA Grant Payout Week)</span>
-          </h3>
-          <p class="text-xs text-slate-300 font-light mt-1 max-w-xl">
-            During SASSA disbursement (Older Persons, Disability, Child Support & SRD grants), cash velocity in township economies increases by <strong>300% to 450%</strong>. Maize meal, cooking oil, and rice fly off shelves within 48 hours.
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Macro Demand Simulation Context:</span>
+            <span id="sassa-status-pill" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">🔥 SURGE ACTIVE (300%-450%)</span>
+          </div>
+          <h2 class="text-sm sm:text-base font-bold text-white mt-0.5">
+            Disbursement Cycle: <span id="cycle-label" class="text-amber-300">Days 1–6 (SASSA Grant Payout Week)</span>
+          </h2>
+          <p class="text-xs text-slate-400 font-light mt-0.5">
+            Turnover velocity surges up to 4.5x for basic foodstuffs (maize meal, oil, bread, rice) as grant money enters township circulation.
           </p>
         </div>
+      </div>
 
-        <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
-          <button onclick="setSimulationMode(true)" id="btn-surge" class="px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-            <span>SASSA Payout Week (Surge)</span>
-          </button>
-          <button onclick="setSimulationMode(false)" id="btn-normal" class="px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all">
-            Mid-Month Normal
-          </button>
+      <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 shrink-0">
+        <button onclick="setSimulationMode(true)" id="btn-surge" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+          <span>SASSA Payout Week</span>
+        </button>
+        <button onclick="setSimulationMode(false)" id="btn-normal" class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white transition-all">
+          Mid-Month Normal
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: POINT OF SALE (POS TILL) & CARD PAYMENTS                          -->
+    <!-- ========================================================================= -->
+    <div id="tab-pos" class="tab-content block">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Catalog Items Grid (8 Cols) -->
+        <div class="lg:col-span-7 xl:col-span-8 space-y-4">
+          <!-- Filter bar -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+            <div class="relative w-full sm:w-64">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-500"></i>
+              <input type="text" id="pos-search" oninput="filterPosCatalog()" placeholder="Search maize, bread, oil..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono">
+            </div>
+
+            <div class="flex items-center gap-1 overflow-x-auto w-full sm:w-auto">
+              <button onclick="filterCategory('ALL')" class="cat-pill active px-3 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">All</button>
+              <button onclick="filterCategory('Staple Grain')" class="cat-pill px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Grains</button>
+              <button onclick="filterCategory('Bakery Daily')" class="cat-pill px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Bakery</button>
+              <button onclick="filterCategory('Cooking Essentials')" class="cat-pill px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Oils</button>
+              <button onclick="filterCategory('Dairy')" class="cat-pill px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Dairy</button>
+              <button onclick="filterCategory('Canned Protein')" class="cat-pill px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Protein</button>
+            </div>
+          </div>
+
+          <!-- Product Cards Grid -->
+          <div id="pos-product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Current Order Cart & Checkout (4 Cols) -->
+        <div class="lg:col-span-5 xl:col-span-4">
+          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl sticky top-6">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-400"></i>
+                <h3 class="font-bold text-white text-base">Current Till Basket</h3>
+              </div>
+              <button onclick="clearCart()" class="text-[11px] font-mono text-rose-400 hover:text-rose-300 flex items-center gap-1">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>Clear</span>
+              </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="my-4 space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Totals & Subtotals -->
+            <div class="border-t border-slate-800 pt-3 space-y-1.5 text-xs font-mono">
+              <div class="flex justify-between text-slate-400">
+                <span>Subtotal (Excl. VAT):</span>
+                <span id="cart-subtotal">R0.00</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>VAT (15% Included):</span>
+                <span id="cart-vat">R0.00</span>
+              </div>
+              <div class="flex justify-between text-sm font-bold text-white pt-1 border-t border-slate-800/80">
+                <span>Total Amount Due:</span>
+                <span id="cart-total" class="text-emerald-400 text-base">R0.00</span>
+              </div>
+            </div>
+
+            <!-- Payment Trigger Buttons -->
+            <div class="mt-5 space-y-2">
+              <button onclick="openPaymentModal('CARD')" id="btn-pay-card" class="w-full py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                <i data-lucide="credit-card" class="w-4 h-4"></i>
+                <span>Tender Card Payment (Tap / Chip)</span>
+              </button>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="openPaymentModal('SASSA')" id="btn-pay-sassa" class="py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold font-mono text-xs flex items-center justify-center gap-1.5 transition-all disabled:opacity-50">
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                  <span>SASSA Gold</span>
+                </button>
+                <button onclick="openPaymentModal('CASH')" id="btn-pay-cash" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs flex items-center justify-center gap-1.5 transition-all disabled:opacity-50">
+                  <i data-lucide="banknote" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>Cash Tender</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick township helper -->
+            <p class="text-[10px] text-slate-500 text-center font-mono mt-3">
+              EMV Contactless & Chip &bull; Capitec Pay &bull; 80mm Thermal Slip
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: SASSA STOCKOUT PREDICTOR & INVENTORY                              -->
+    <!-- ========================================================================= -->
+    <div id="tab-inventory" class="tab-content hidden">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
+              <h3 class="text-lg font-bold text-white">Staple Product Stockout Forecast</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Algorithm: Reorder point = Demand velocity &times; (Wholesaler lead time + 1 day buffer).
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono text-slate-400">Wholesale Lead Time: 1–3 Days</span>
+            <button onclick="resetToSampleData()" class="px-3 py-1.5 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+              Reset Demo Data
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+              <tr>
+                <th class="p-3">SKU & Product Name</th>
+                <th class="p-3">Wholesaler</th>
+                <th class="p-3">Current Stock</th>
+                <th class="p-3">Daily Velocity</th>
+                <th class="p-3">Estimated Runout</th>
+                <th class="p-3">Order Req. (7d)</th>
+                <th class="p-3">Batch & Expiry</th>
+                <th class="p-3 text-right">Status / Action</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body" class="divide-y divide-slate-800/60">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- Inventory SKUs Dashboard Table -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl mb-8">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
-          <h3 class="text-lg font-bold text-white">Staple Product Stockout Forecast</h3>
+    <!-- ========================================================================= -->
+    <!-- TAB 3: EXPIRY DATE & PERISHABLE WASTAGE REDUCTION                         -->
+    <!-- ========================================================================= -->
+    <div id="tab-expiry" class="tab-content hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+              <h3 class="text-lg font-bold text-white">Perishable Expiry & Markdown Engine</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">
+              Spaza shop owners lose up to 7% of goods to expired bread, milk, and eggs. Automatically apply clearance markdowns before expiry.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-xl text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/30 font-semibold" id="expiry-alert-count">
+              1 Critical Item Expiring Soon
+            </span>
+          </div>
         </div>
-        <span class="text-xs font-mono text-slate-400">Lead Time: 1–2 days from Cash & Carry</span>
-      </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs font-mono">
-          <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
-            <tr>
-              <th class="p-3">SKU & Item</th>
-              <th class="p-3">Current Stock</th>
-              <th class="p-3">Daily Velocity</th>
-              <th class="p-3">Estimated Runout</th>
-              <th class="p-3">Restock Order</th>
-              <th class="p-3 text-right">Status</th>
-            </tr>
-          </thead>
-          <tbody id="inventory-table-body" class="divide-y divide-slate-800/60">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+        <!-- Expiry Cards Grid -->
+        <div id="expiry-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
       </div>
     </div>
 
-    <!-- Business Intelligence Takeaway -->
-    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8">
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-          <i data-lucide="lightbulb" class="w-6 h-6"></i>
+    <!-- ========================================================================= -->
+    <!-- TAB 4: WEEKLY WHOLESALER ORDERS & REQUISITIONS                            -->
+    <!-- ========================================================================= -->
+    <div id="tab-weekly" class="tab-content hidden">
+      <!-- Performance summary cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+          <span class="text-slate-400 text-xs font-mono">Weekly Units to Order</span>
+          <p id="weekly-kpi-units" class="text-2xl font-extrabold text-white mt-1">421 units</p>
+          <span class="text-[10px] text-emerald-400 font-mono mt-0.5 block">&bull; Covers 7-day township demand</span>
         </div>
-        <div>
-          <h3 class="text-lg font-bold text-white mb-2">Informatics Value for the Informal Economy</h3>
-          <p class="text-sm text-slate-300 font-light leading-relaxed">
-            South African Spaza shop owners lose an estimated <strong>18% of their monthly revenue</strong> by running out of stock of basic staples (maize meal, cooking oil, bread) between the 1st and 5th of the month. Traditional ERP software is prohibitively expensive and complicated. Spaza-Smart demonstrates how lean algorithmic heuristics running on basic mobile web or USSD empower micro-entrepreneurs with predictive purchasing power.
-          </p>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+          <span class="text-slate-400 text-xs font-mono">Total Wholesale Spend</span>
+          <p id="weekly-kpi-spend" class="text-2xl font-extrabold text-amber-400 mt-1">R17,265.00</p>
+          <span class="text-[10px] text-slate-400 font-mono mt-0.5 block">&bull; Cash & Carry cost (Devland/Boxer/Makro)</span>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+          <span class="text-slate-400 text-xs font-mono">Projected Retail Revenue</span>
+          <p id="weekly-kpi-revenue" class="text-2xl font-extrabold text-emerald-400 mt-1">R21,242.50</p>
+          <span class="text-[10px] text-slate-400 font-mono mt-0.5 block">&bull; Expected sales at retail markup</span>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+          <span class="text-slate-400 text-xs font-mono">Projected Gross Profit</span>
+          <p id="weekly-kpi-profit" class="text-2xl font-extrabold text-cyan-400 mt-1">R3,977.50</p>
+          <span id="weekly-kpi-margin" class="text-[10px] text-cyan-300 font-mono mt-0.5 block">&bull; 18.7% Gross Margin</span>
         </div>
       </div>
-    </section>
+
+      <!-- Wholesaler Breakdowns -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="building-2" class="w-5 h-5 text-emerald-400"></i>
+            <h3 class="text-lg font-bold text-white">Consolidated Wholesaler Orders</h3>
+          </div>
+          <button onclick="printWeeklyRequisition()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 transition-all">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print Wholesaler Requisition Sheet</span>
+          </button>
+        </div>
+
+        <div id="wholesaler-orders-container" class="space-y-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: INVOICES & SLIPS HUB                                              -->
+    <!-- ========================================================================= -->
+    <div id="tab-invoices" class="tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Past Slips & Invoices Archive (7 Cols) -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="receipt" class="w-5 h-5 text-emerald-400"></i>
+              <h3 class="text-lg font-bold text-white">Till Slips & Invoices Archive</h3>
+            </div>
+            <span class="text-xs font-mono text-slate-400">Local POS History</span>
+          </div>
+
+          <div id="slips-history-container" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Right: Create Formal B2B Tax Invoice (5 Cols) -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="file-text" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="text-lg font-bold text-white">Issue Formal Tax Invoice</h3>
+          </div>
+          <p class="text-xs text-slate-400 font-light mb-4">
+            Create an official South African Tax Invoice for bulk customers (creches, school feeding schemes, funeral caterers, local tuckshops).
+          </p>
+
+          <form onsubmit="handleCreateInvoice(event)" class="space-y-3 text-xs font-mono">
+            <div>
+              <label class="block text-slate-400 mb-1">Customer / Organization Name:</label>
+              <input type="text" id="inv-client-name" required value="Orlando West Community Creche & Feeding Scheme" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Delivery Address:</label>
+              <input type="text" id="inv-client-addr" required value="1290 Pela Street, Orlando West, Soweto, 1804" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-400 mb-1">VAT / NPO Registration:</label>
+                <input type="text" id="inv-client-tax" value="NPO-492-910" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-slate-400 mb-1">Payment Terms:</label>
+                <select id="inv-terms" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                  <option value="Instant EFT / Capitec Pay">Instant EFT / Capitec</option>
+                  <option value="7 Days Net">7 Days Net</option>
+                  <option value="Cash on Delivery (COD)">Cash on Delivery</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Predefined package selection -->
+            <div>
+              <label class="block text-slate-400 mb-1">Invoice Item Package:</label>
+              <select id="inv-package" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                <option value="creche">Creche Bulk Staples (Maize, Sugar, Milk, Eggs)</option>
+                <option value="feeding">Township Feeding Scheme (Maize 12.5kg, Oil 2L, Pilchards, Rice)</option>
+                <option value="cart">Use Current Till Basket Items</option>
+              </select>
+            </div>
+
+            <button type="submit" class="w-full mt-2 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              <span>Generate & Preview Tax Invoice</span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: MOBILE KOTLIN & C++ TERMINALS                                      -->
+    <!-- ========================================================================= -->
+    <div id="tab-apps" class="tab-content hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+        <!-- Kotlin Android POS App Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+              <i data-lucide="smartphone" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">Android Kotlin Mobile POS App</h3>
+              <span class="text-xs font-mono text-emerald-400">Jetpack Compose &bull; Material 3 &bull; NFC Tap</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 font-light mb-4 leading-relaxed">
+            Native Android POS solution developed in Kotlin for handheld card terminals (Sunmi V2, Pax A920, Yoco Neo) and smartphones. Supports NFC Tap-to-Phone, Bluetooth thermal receipt printing, and live SASSA grant cycle forecasting.
+          </p>
+          <div class="bg-slate-950 rounded-xl p-3 font-mono text-xs text-slate-400 border border-slate-800 mb-4 space-y-1">
+            <div class="text-emerald-400 font-bold">Directory: mobile-kotlin/</div>
+            <div>&bull; Jetpack Compose Modern Architecture</div>
+            <div>&bull; CardPaymentProcessor.kt (Luhn Algorithm & PASA Switch)</div>
+            <div>&bull; ReceiptSlipGenerator.kt (58mm/80mm ESC/POS)</div>
+            <div>&bull; InventoryExpiryScreen.kt (Clearance Markdowns)</div>
+          </div>
+          <a href="https://github.com/BongaManzini/spaza-smart-inventory/tree/main/mobile-kotlin" target="_blank" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs flex items-center gap-2 inline-flex transition-all">
+            <i data-lucide="folder-code" class="w-4 h-4 text-emerald-400"></i>
+            <span>Inspect mobile-kotlin Source</span>
+          </a>
+        </div>
+
+        <!-- C++ POS Smart Terminal Engine Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">C++17 Smart Terminal & POS Engine</h3>
+              <span class="text-xs font-mono text-cyan-400">Native C++ &bull; EMV Simulation &bull; ESC/POS</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 font-light mb-4 leading-relaxed">
+            High-performance embedded C++ POS daemon and decision engine. Validates card checksums via Luhn mod-10, formats 80mm ESC/POS thermal receipts, produces formal A4 invoices, and audits batch expiry dates.
+          </p>
+          <div class="bg-slate-950 rounded-xl p-3 font-mono text-xs text-slate-400 border border-slate-800 mb-4 space-y-1">
+            <div class="text-cyan-400 font-bold">Directory: terminal-cpp/</div>
+            <div>&bull; Built with C++17 (`make` & `cmake` ready)</div>
+            <div>&bull; PaymentGateway.cpp (Card Scheme & Luhn mod-10)</div>
+            <div>&bull; ReceiptPrinter.cpp (Thermal Till Slips & Tax Invoices)</div>
+            <div>&bull; CLI flags: `./spaza_terminal --demo --pay 155.00`</div>
+          </div>
+          <a href="https://github.com/BongaManzini/spaza-smart-inventory/tree/main/terminal-cpp" target="_blank" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs flex items-center gap-2 inline-flex transition-all">
+            <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
+            <span>Inspect terminal-cpp Source</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer class="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono gap-4">
-      <p>© Bonga Manzini • BSc Informatics (UNISA) • Informal Business Intelligence</p>
+      <p>&copy; Bonga Manzini &bull; BSc Informatics (UNISA) &bull; Informal Retail Decision-Support System</p>
       <div class="flex items-center gap-4">
         <a href="https://github.com/BongaManzini/spaza-smart-inventory" target="_blank" class="hover:text-emerald-400 transition-colors">GitHub Repository</a>
-        <span>•</span>
+        <span>&bull;</span>
         <a href="https://bongamanzini.github.io/portfolio/" target="_blank" class="hover:text-emerald-400 transition-colors">Portfolio</a>
       </div>
     </footer>
+
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- MODAL: CARD & CASH PAYMENT PROCESSING                                    -->
+  <!-- ========================================================================= -->
+  <div id="modal-payment" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('modal-payment')" class="absolute top-5 right-5 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-white text-base">Tender Customer Payment</h3>
+          <p class="text-xs text-slate-400">Total Due: <span id="modal-pay-amount" class="font-bold text-emerald-400">R0.00</span></p>
+        </div>
+      </div>
+
+      <!-- Payment Method Tabs -->
+      <div class="flex items-center gap-2 border-b border-slate-800 pb-3 mb-4 text-xs font-mono">
+        <button onclick="selectPayTab('CARD')" id="btn-paytab-card" class="px-3 py-1.5 rounded-lg font-bold bg-emerald-500 text-slate-950">Bank Card</button>
+        <button onclick="selectPayTab('SASSA')" id="btn-paytab-sassa" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white">SASSA Gold</button>
+        <button onclick="selectPayTab('CASH')" id="btn-paytab-cash" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white">Cash Tender</button>
+      </div>
+
+      <!-- Card / SASSA Form -->
+      <div id="payform-card" class="space-y-3 text-xs font-mono">
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-slate-400">16-Digit Card Number (PAN):</label>
+            <span id="detected-card-brand" class="text-amber-400 font-bold text-[10px]">VISA DEBIT</span>
+          </div>
+          <div class="relative">
+            <input type="text" id="pay-card-num" value="4532 0151 1283 0366" oninput="handleCardNumberInput(this)" maxlength="19" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
+            <i data-lucide="credit-card" class="w-4 h-4 absolute right-3 top-2.5 text-slate-500"></i>
+          </div>
+          <span id="card-luhn-status" class="text-[10px] text-emerald-400 block mt-1">✓ Valid Card Checksum (Luhn Verified)</span>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">Cardholder Name:</label>
+          <input type="text" id="pay-card-name" value="N. DLAMINI" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-slate-400 mb-1">Expiry MM/YY:</label>
+            <input type="text" id="pay-card-exp" value="12/28" maxlength="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">CVV:</label>
+            <input type="password" id="pay-card-cvv" value="842" maxlength="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">PIN Pad:</label>
+            <input type="password" id="pay-card-pin" value="4920" maxlength="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <button onclick="processPayment('CARD_TAP')" class="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/20 transition-all">
+            <i data-lucide="radio" class="w-4 h-4"></i>
+            <span>NFC Tap-to-Pay</span>
+          </button>
+          <button onclick="processPayment('CARD_CHIP')" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold font-mono text-xs flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i>
+            <span>Insert Chip & PIN</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cash Tender Form -->
+      <div id="payform-cash" class="space-y-3 text-xs font-mono hidden">
+        <div>
+          <label class="block text-slate-400 mb-1">Cash Tendered (ZAR):</label>
+          <input type="number" id="pay-cash-amount" step="1" oninput="calculateChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <!-- Quick denomination buttons -->
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="setCashTender(50)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs">R50</button>
+          <button type="button" onclick="setCashTender(100)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs">R100</button>
+          <button type="button" onclick="setCashTender(200)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs">R200</button>
+          <button type="button" onclick="setCashTender(500)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs">R500</button>
+          <button type="button" onclick="setExactCash()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs">Exact</button>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+          <span class="text-slate-400">Change Due to Customer:</span>
+          <span id="cash-change-due" class="text-base font-bold text-emerald-400">R0.00</span>
+        </div>
+
+        <button onclick="processPayment('CASH')" class="w-full mt-2 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/20 transition-all">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Complete Cash Sale & Print Slip</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ADD / EDIT PRODUCT                                                -->
+  <!-- ========================================================================= -->
+  <div id="modal-add-product" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('modal-add-product')" class="absolute top-5 right-5 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 mb-4">
+        <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-400"></i>
+        <h3 class="font-bold text-white text-base">Add New Grocery SKU</h3>
+      </div>
+
+      <form onsubmit="handleAddNewProduct(event)" class="space-y-3 text-xs font-mono">
+        <div>
+          <label class="block text-slate-400 mb-1">Product Name & Size:</label>
+          <input type="text" id="add-prod-name" required placeholder="e.g. Iwisa Super Maize Meal (10kg)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-400 mb-1">SKU Code:</label>
+            <input type="text" id="add-prod-sku" required placeholder="IW-10K" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Category:</label>
+            <select id="add-prod-cat" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+              <option value="Staple Grain">Staple Grain</option>
+              <option value="Bakery Daily">Bakery Daily</option>
+              <option value="Cooking Essentials">Cooking Essentials</option>
+              <option value="Dry Pantry">Dry Pantry</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Canned Protein">Canned Protein</option>
+              <option value="Poultry & Dairy">Poultry & Dairy</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-400 mb-1">Wholesale Cost (R):</label>
+            <input type="number" id="add-prod-cost" required step="0.1" placeholder="110.0" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Selling Price (R):</label>
+            <input type="number" id="add-prod-sell" required step="0.1" placeholder="139.9" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-400 mb-1">Current Stock:</label>
+            <input type="number" id="add-prod-stock" required value="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Unit Type:</label>
+            <input type="text" id="add-prod-unit" required value="Bags" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-slate-400 mb-1">Supplier Wholesaler:</label>
+            <select id="add-prod-supplier" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+              <option value="Devland Cash & Carry">Devland Cash & Carry</option>
+              <option value="Boxer Superstores">Boxer Superstores</option>
+              <option value="Makro Crown Mines">Makro Crown Mines</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Expiry Date:</label>
+            <input type="date" id="add-prod-expiry" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full mt-2 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs flex items-center justify-center gap-1.5 transition-all">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Save Product to Catalog</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: DOCUMENT PRINT PREVIEW (THERMAL SLIP / A4 INVOICE / REQUISITION)   -->
+  <!-- ========================================================================= -->
+  <div id="modal-preview" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <i data-lucide="printer" class="w-5 h-5 text-emerald-400"></i>
+          <h3 id="preview-modal-title" class="font-bold text-white text-base">Print Preview</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="executeBrowserPrint()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow transition-all">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print Now</span>
+          </button>
+          <button onclick="closeModal('modal-preview')" class="text-slate-400 hover:text-white p-1">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview container -->
+      <div class="overflow-y-auto my-4 flex-1 flex justify-center bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80">
+        <div id="preview-modal-content" class="w-full flex justify-center">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs font-mono text-slate-500">
+        <span>Thermal 80mm ESC/POS &bull; A4 Letterhead</span>
+        <button onclick="closeModal('modal-preview')" class="text-slate-400 hover:text-white">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- HIDDEN PRINT CONTAINER (ONLY VISIBLE IN @MEDIA PRINT)                     -->
+  <!-- ========================================================================= -->
+  <div id="printable-area"></div>
+
+  <!-- ========================================================================= -->
+  <!-- APPLICATION SCRIPT LOGIC                                                 -->
+  <!-- ========================================================================= -->
   <script>
-    lucide.createIcons();
-
+    // State Variables
     let isSurge = true;
+    let currentCategoryFilter = 'ALL';
+    let currentPayMode = 'CARD';
 
-    const INVENTORY = [
-      { sku: 'MZ-125', name: 'White Star Super Maize Meal (12.5kg)', stock: 8, unit: 'Bags', baseSales: 4.2, surgeMult: 4.5, cost: 125, sell: 155 },
-      { sku: 'BR-ALB', name: 'Albany Superior Sliced White Bread (700g)', stock: 15, unit: 'Loaves', baseSales: 35.0, surgeMult: 1.8, cost: 17.5, sell: 21 },
-      { sku: 'CO-02L', name: 'Sunfoil Sunflower Cooking Oil (2L)', stock: 6, unit: 'Bottles', baseSales: 3.0, surgeMult: 3.8, cost: 64, sell: 79.9 },
-      { sku: 'SG-02K', name: 'Huletts White Sugar (2kg)', stock: 10, unit: 'Packs', baseSales: 5.0, surgeMult: 3.0, cost: 48, sell: 59.9 },
-      { sku: 'RC-10K', name: 'Tastic Parboiled Rice (10kg)', stock: 5, unit: 'Bags', baseSales: 2.8, surgeMult: 3.6, cost: 175, sell: 215 },
-      { sku: 'MK-06P', name: 'First Choice Long Life Milk (6x1L)', stock: 4, unit: 'Boxes', baseSales: 3.5, surgeMult: 2.5, cost: 98, sell: 122 },
-      { sku: 'PL-400', name: 'Lucky Star Pilchards in Tomato (400g)', stock: 24, unit: 'Cans', baseSales: 12.0, surgeMult: 2.8, cost: 22.5, sell: 27.5 }
+    // South African Staple Basket Data
+    const INITIAL_INVENTORY = [
+      {
+        sku: 'MZ-125',
+        name: 'White Star Super Maize Meal (12.5kg)',
+        category: 'Staple Grain',
+        stock: 8,
+        unit: 'Bags',
+        baseSales: 4.2,
+        surgeMult: 4.5,
+        cost: 125.0,
+        sell: 155.0,
+        supplier: 'Devland Cash & Carry',
+        leadDays: 2,
+        batchNo: 'LOT-MZ881',
+        expiryDate: '2027-04-25',
+        daysUntilExpiry: 180
+      },
+      {
+        sku: 'BR-ALB',
+        name: 'Albany Superior Sliced White Bread (700g)',
+        category: 'Bakery Daily',
+        stock: 15,
+        unit: 'Loaves',
+        baseSales: 35.0,
+        surgeMult: 1.8,
+        cost: 17.5,
+        sell: 21.0,
+        supplier: 'Boxer Superstores',
+        leadDays: 1,
+        batchNo: 'LOT-BR042',
+        expiryDate: '2026-10-29',
+        daysUntilExpiry: 2 // Urgent perishable!
+      },
+      {
+        sku: 'CO-02L',
+        name: 'Sunfoil Sunflower Cooking Oil (2L)',
+        category: 'Cooking Essentials',
+        stock: 6,
+        unit: 'Bottles',
+        baseSales: 3.0,
+        surgeMult: 3.8,
+        cost: 64.0,
+        sell: 79.9,
+        supplier: 'Makro Crown Mines',
+        leadDays: 2,
+        batchNo: 'LOT-CO912',
+        expiryDate: '2027-06-24',
+        daysUntilExpiry: 240
+      },
+      {
+        sku: 'SG-02K',
+        name: 'Huletts White Sugar (2kg)',
+        category: 'Dry Pantry',
+        stock: 10,
+        unit: 'Packs',
+        baseSales: 5.0,
+        surgeMult: 3.0,
+        cost: 48.0,
+        sell: 59.9,
+        supplier: 'Devland Cash & Carry',
+        leadDays: 2,
+        batchNo: 'LOT-SG401',
+        expiryDate: '2027-10-27',
+        daysUntilExpiry: 365
+      },
+      {
+        sku: 'RC-10K',
+        name: 'Tastic Parboiled Rice (10kg)',
+        category: 'Staple Grain',
+        stock: 5,
+        unit: 'Bags',
+        baseSales: 2.8,
+        surgeMult: 3.6,
+        cost: 175.0,
+        sell: 215.0,
+        supplier: 'Makro Crown Mines',
+        leadDays: 3,
+        batchNo: 'LOT-RC773',
+        expiryDate: '2027-08-23',
+        daysUntilExpiry: 300
+      },
+      {
+        sku: 'MK-06P',
+        name: 'First Choice Long Life Milk (6x1L)',
+        category: 'Dairy',
+        stock: 4,
+        unit: 'Boxes',
+        baseSales: 3.5,
+        surgeMult: 2.5,
+        cost: 98.0,
+        sell: 122.0,
+        supplier: 'Boxer Superstores',
+        leadDays: 2,
+        batchNo: 'LOT-MK303',
+        expiryDate: '2026-12-11',
+        daysUntilExpiry: 45
+      },
+      {
+        sku: 'PL-400',
+        name: 'Lucky Star Pilchards in Tomato (400g)',
+        category: 'Canned Protein',
+        stock: 24,
+        unit: 'Cans',
+        baseSales: 12.0,
+        surgeMult: 2.8,
+        cost: 22.5,
+        sell: 27.5,
+        supplier: 'Devland Cash & Carry',
+        leadDays: 1,
+        batchNo: 'LOT-PL109',
+        expiryDate: '2028-09-26',
+        daysUntilExpiry: 700
+      },
+      {
+        sku: 'EG-30T',
+        name: 'Nulaid Large Eggs Tray (30pk)',
+        category: 'Poultry & Dairy',
+        stock: 7,
+        unit: 'Trays',
+        baseSales: 6.0,
+        surgeMult: 2.2,
+        cost: 72.0,
+        sell: 89.9,
+        supplier: 'Boxer Superstores',
+        leadDays: 1,
+        batchNo: 'LOT-EG550',
+        expiryDate: '2026-11-01',
+        daysUntilExpiry: 5 // Warning perishable
+      }
     ];
 
-    function renderInventory() {
+    // Local Storage Data loader
+    function loadInventory() {
+      const saved = localStorage.getItem('spaza_inventory_data');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (e) { }
+      }
+      return JSON.parse(JSON.stringify(INITIAL_INVENTORY));
+    }
+
+    function saveInventory(data) {
+      localStorage.setItem('spaza_inventory_data', JSON.stringify(data));
+    }
+
+    let inventory = loadInventory();
+    let cart = []; // [{ sku, qty }]
+
+    function loadSlips() {
+      const saved = localStorage.getItem('spaza_slips_archive');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (e) { }
+      }
+      return [
+        {
+          id: 'SPZ-2026-9041',
+          type: 'SLIP',
+          date: '2026-10-27 14:32:10',
+          customer: 'Walk-in Township Customer',
+          paymentMethod: 'CARD - VISA CONTACTLESS',
+          cardPan: '4532 **** **** 0366',
+          authCode: 'AUTH918231',
+          items: [
+            { name: 'White Star Super Maize Meal (12.5kg)', qty: 1, price: 155.0 },
+            { name: 'Albany Superior Sliced White Bread', qty: 2, price: 21.0 },
+            { name: 'Sunfoil Sunflower Cooking Oil (2L)', qty: 1, price: 79.9 }
+          ],
+          total: 276.90
+        }
+      ];
+    }
+
+    function saveSlips(slips) {
+      localStorage.setItem('spaza_slips_archive', JSON.stringify(slips));
+    }
+
+    let slipsArchive = loadSlips();
+
+    // ==========================================
+    // Tab Navigation
+    // ==========================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-500', 'text-slate-950', 'font-bold');
+        btn.classList.add('text-slate-400', 'font-medium');
+      });
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400', 'font-medium');
+        activeBtn.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
+      }
+
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // SASSA Surge Mode Toggle
+    // ==========================================
+    function setSimulationMode(surge) {
+      isSurge = surge;
+      const surgeBtn = document.getElementById('btn-surge');
+      const normalBtn = document.getElementById('btn-normal');
+      const label = document.getElementById('cycle-label');
+      const pill = document.getElementById('sassa-status-pill');
+
+      if (isSurge) {
+        surgeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
+        normalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
+        label.textContent = 'Days 1–6 (SASSA Grant Payout Week)';
+        label.className = 'text-amber-300 font-bold';
+        pill.textContent = '🔥 SURGE ACTIVE (300%-450%)';
+        pill.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+      } else {
+        normalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
+        surgeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
+        label.textContent = 'Mid-Month (Normal Baseline Demand)';
+        label.className = 'text-emerald-300 font-bold';
+        pill.textContent = '🟢 NORMAL TURNOVER';
+        pill.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+      }
+
+      renderAll();
+    }
+
+    // ==========================================
+    // POS Till Catalog & Cart
+    // ==========================================
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        pill.classList.remove('bg-emerald-500/20', 'text-emerald-300', 'border', 'border-emerald-500/30', 'font-bold');
+        pill.classList.add('text-slate-400');
+      });
+      event.target.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border', 'border-emerald-500/30', 'font-bold');
+      event.target.classList.remove('text-slate-400');
+      renderPosCatalog();
+    }
+
+    function filterPosCatalog() {
+      renderPosCatalog();
+    }
+
+    function renderPosCatalog() {
+      const container = document.getElementById('pos-product-grid');
+      const searchQuery = (document.getElementById('pos-search').value || '').toLowerCase();
+
+      const filtered = inventory.filter(p => {
+        const matchesCat = currentCategoryFilter === 'ALL' || p.category === currentCategoryFilter;
+        const matchesQuery = p.name.toLowerCase().includes(searchQuery) || p.sku.toLowerCase().includes(searchQuery);
+        return matchesCat && matchesQuery;
+      });
+
+      container.innerHTML = filtered.map(item => {
+        const isLowStock = item.stock <= 5;
+        const isExpiring = item.daysUntilExpiry <= 3;
+
+        return `
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition-all group">
+            <div>
+              <div class="flex items-start justify-between gap-1 mb-1.5">
+                <span class="text-[10px] font-mono text-slate-500 uppercase">${item.category}</span>
+                ${isExpiring ? '<span class="text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 px-1.5 py-0.5 rounded">Expires in ' + item.daysUntilExpiry + 'd</span>' : ''}
+              </div>
+              <h4 class="font-bold text-white text-xs leading-snug group-hover:text-emerald-400 transition-colors">${item.name}</h4>
+              <p class="text-[10px] font-mono text-slate-500 mt-0.5">SKU: ${item.sku}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+              <div>
+                <span class="text-sm font-extrabold text-emerald-400 font-mono">R${item.sell.toFixed(2)}</span>
+                <span class="text-[10px] text-slate-500 block">Stock: <strong class="${isLowStock ? 'text-rose-400' : 'text-slate-300'}">${item.stock} ${item.unit}</strong></span>
+              </div>
+              <button onclick="addToCart('${item.sku}')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-200 text-xs font-mono flex items-center gap-1 transition-all">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>Add</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function addToCart(sku) {
+      const prod = inventory.find(i => i.sku === sku);
+      if (!prod) return;
+
+      const existing = cart.find(i => i.sku === sku);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ sku: prod.sku, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function updateCartQty(sku, delta) {
+      const idx = cart.findIndex(i => i.sku === sku);
+      if (idx !== -1) {
+        cart[idx].qty += delta;
+        if (cart[idx].qty <= 0) {
+          cart.splice(idx, 1);
+        }
+      }
+      renderCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const quickTotal = document.getElementById('quick-cart-total');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      const vatEl = document.getElementById('cart-vat');
+      const totalEl = document.getElementById('cart-total');
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-slate-500 text-xs font-mono">
+            <i data-lucide="shopping-bag" class="w-8 h-8 mx-auto mb-2 opacity-30"></i>
+            <p>Till basket is empty</p>
+            <p class="text-[10px] text-slate-600 mt-1">Click + Add on groceries</p>
+          </div>
+        `;
+        quickTotal.textContent = 'R0.00';
+        subtotalEl.textContent = 'R0.00';
+        vatEl.textContent = 'R0.00';
+        totalEl.textContent = 'R0.00';
+        document.getElementById('btn-pay-card').disabled = true;
+        document.getElementById('btn-pay-sassa').disabled = true;
+        document.getElementById('btn-pay-cash').disabled = true;
+        lucide.createIcons();
+        return;
+      }
+
+      document.getElementById('btn-pay-card').disabled = false;
+      document.getElementById('btn-pay-sassa').disabled = false;
+      document.getElementById('btn-pay-cash').disabled = false;
+
+      let subtotal = 0;
+      container.innerHTML = cart.map(item => {
+        const prod = inventory.find(p => p.sku === item.sku);
+        if (!prod) return '';
+        const lineTot = item.qty * prod.sell;
+        subtotal += lineTot;
+
+        return `
+          <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between text-xs">
+            <div class="flex-1 pr-2">
+              <h5 class="text-white font-medium text-xs leading-tight line-clamp-1">${prod.name}</h5>
+              <span class="text-[10px] font-mono text-slate-500">R${prod.sell.toFixed(2)} &times; ${item.qty} = <strong>R${lineTot.toFixed(2)}</strong></span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="updateCartQty('${item.sku}', -1)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">
+                <i data-lucide="minus" class="w-3 h-3"></i>
+              </button>
+              <span class="w-5 text-center font-mono font-bold text-white text-xs">${item.qty}</span>
+              <button onclick="updateCartQty('${item.sku}', 1)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">
+                <i data-lucide="plus" class="w-3 h-3"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const vat = subtotal * 0.15;
+      const formattedTotal = 'R' + subtotal.toFixed(2);
+      subtotalEl.textContent = 'R' + (subtotal - vat).toFixed(2);
+      vatEl.textContent = 'R' + vat.toFixed(2);
+      totalEl.textContent = formattedTotal;
+      quickTotal.textContent = formattedTotal;
+
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // Inventory Forecast Table
+    // ==========================================
+    function renderInventoryTable() {
       const tbody = document.getElementById('inventory-table-body');
 
-      tbody.innerHTML = INVENTORY.map(item => {
+      tbody.innerHTML = inventory.map(item => {
         const dailyVelocity = (item.baseSales * (isSurge ? item.surgeMult : 1.0)).toFixed(1);
         const daysLeft = (item.stock / dailyVelocity).toFixed(1);
         const isUrgent = daysLeft < 2.0;
-        const reorderUnits = Math.max(0, Math.round((dailyVelocity * 6) - item.stock));
+        const reorderUnits = Math.max(0, Math.round((dailyVelocity * 7) - item.stock));
+        const daysToExpiry = item.daysUntilExpiry;
 
         return `
           <tr class="hover:bg-slate-900/50 transition-colors">
             <td class="p-3">
               <span class="text-white font-bold block">${item.name}</span>
-              <span class="text-[10px] text-slate-500">SKU: ${item.sku}</span>
+              <span class="text-[10px] text-slate-500">SKU: ${item.sku} &bull; Lead: ${item.leadDays}d</span>
             </td>
+            <td class="p-3 text-slate-300 text-[11px]">${item.supplier}</td>
             <td class="p-3 text-slate-200">
               <span class="font-bold text-sm ${item.stock <= 5 ? 'text-rose-400' : 'text-slate-200'}">${item.stock}</span>
               <span class="text-slate-500 text-[10px]">${item.unit}</span>
@@ -180,49 +1201,822 @@
               </span>
             </td>
             <td class="p-3 text-slate-200">
-              ${reorderUnits > 0 ? `<strong>${reorderUnits}</strong> ${item.unit}` : '<span class="text-slate-500">Stock Adequate</span>'}
+              ${reorderUnits > 0 ? `<strong>${reorderUnits}</strong> ${item.unit} <span class="text-[10px] text-slate-500">(~R${(reorderUnits * item.cost).toFixed(0)})</span>` : '<span class="text-slate-500">Adequate</span>'}
+            </td>
+            <td class="p-3">
+              <span class="text-white text-[11px] block">${item.batchNo}</span>
+              <span class="text-[10px] ${daysToExpiry <= 3 ? 'text-rose-400 font-bold' : 'text-slate-400'}">${item.expiryDate} (${daysToExpiry}d)</span>
             </td>
             <td class="p-3 text-right">
               ${isUrgent ? `
-                <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
-                  🚨 REORDER NOW
-                </span>
+                <button onclick="restockSku('${item.sku}', ${reorderUnits > 0 ? reorderUnits : 10})" class="px-2.5 py-1 rounded text-[10px] bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 font-bold transition-all">
+                  🚨 Restock (${reorderUnits > 0 ? reorderUnits : 10})
+                </button>
               ` : `
-                <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  ✅ Stock OK
-                </span>
+                <button onclick="restockSku('${item.sku}', 5)" class="px-2.5 py-1 rounded text-[10px] bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 transition-all">
+                  + Add 5
+                </button>
               `}
             </td>
           </tr>
+        `;
+      }).join('');
+    }
+
+    function restockSku(sku, units) {
+      const prod = inventory.find(p => p.sku === sku);
+      if (prod) {
+        prod.stock += units;
+        saveInventory(inventory);
+        renderAll();
+      }
+    }
+
+    // ==========================================
+    // Expiry Date & Perishables Tracker
+    // ==========================================
+    function renderExpiryCards() {
+      const container = document.getElementById('expiry-cards-grid');
+      const alertCount = document.getElementById('expiry-alert-count');
+
+      let urgentCount = 0;
+      container.innerHTML = inventory.map(item => {
+        const days = item.daysUntilExpiry;
+        const isCritical = days <= 3;
+        const isWarning = days > 3 && days <= 7;
+        if (isCritical) urgentCount++;
+
+        let markdownPct = 0;
+        if (days < 0) markdownPct = 100;
+        else if (days <= 3) markdownPct = 25;
+        else if (days <= 7) markdownPct = 10;
+
+        return `
+          <div class="bg-slate-900 border ${isCritical ? 'border-rose-500/50 bg-rose-950/10' : isWarning ? 'border-amber-500/40 bg-amber-950/10' : 'border-slate-800'} rounded-2xl p-5 shadow-lg flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-mono text-slate-500 uppercase">${item.category}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${isCritical ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : isWarning ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300'}">
+                  ${days < 0 ? 'EXPIRED' : days + ' Days Left'}
+                </span>
+              </div>
+              <h4 class="font-bold text-white text-sm mb-1">${item.name}</h4>
+              <p class="text-xs font-mono text-slate-400">Batch: <strong class="text-slate-200">${item.batchNo}</strong></p>
+              <p class="text-xs font-mono text-slate-400">Expiry Date: <strong class="text-slate-200">${item.expiryDate}</strong></p>
+              <p class="text-xs font-mono text-slate-400">Stock on Hand: <strong class="text-slate-200">${item.stock} ${item.unit}</strong></p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800/80">
+              ${markdownPct > 0 ? `
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-[10px] text-amber-400 block font-mono">Suggested Clearance:</span>
+                    <span class="text-xs font-bold text-white">Apply ${markdownPct}% Markdown</span>
+                  </div>
+                  <button onclick="applyMarkdown('${item.sku}', ${markdownPct})" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-mono font-bold transition-all">
+                    Apply R${(item.sell * (1 - markdownPct / 100)).toFixed(2)}
+                  </button>
+                </div>
+              ` : `
+                <div class="flex items-center justify-between text-xs font-mono text-slate-500">
+                  <span>Shelf life safe</span>
+                  <span class="text-emerald-400">✓ No action required</span>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      alertCount.textContent = urgentCount > 0 ? `${urgentCount} Critical Perishable(s) Expiring Soon` : 'All Perishables Within Safe Shelf Life';
+      alertCount.className = urgentCount > 0 ? 'px-3 py-1 rounded-xl text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/30 font-semibold' : 'px-3 py-1 rounded-xl text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold';
+    }
+
+    function applyMarkdown(sku, pct) {
+      const prod = inventory.find(p => p.sku === sku);
+      if (prod) {
+        prod.sell = prod.sell * (1 - (pct / 100));
+        saveInventory(inventory);
+        renderAll();
+        alert(`Clearance markdown of ${pct}% applied to ${prod.name}! New retail price: R${prod.sell.toFixed(2)}`);
+      }
+    }
+
+    // ==========================================
+    // Weekly Wholesaler Order Consolidation
+    // ==========================================
+    function renderWeeklyOrders() {
+      const container = document.getElementById('wholesaler-orders-container');
+      const kpiUnits = document.getElementById('weekly-kpi-units');
+      const kpiSpend = document.getElementById('weekly-kpi-spend');
+      const kpiRev = document.getElementById('weekly-kpi-revenue');
+      const kpiProfit = document.getElementById('weekly-kpi-profit');
+      const kpiMargin = document.getElementById('weekly-kpi-margin');
+
+      const suppliers = {};
+      let totalUnits = 0;
+      let totalSpend = 0;
+      let totalSales = 0;
+
+      inventory.forEach(item => {
+        const dailyVelocity = item.baseSales * (isSurge ? item.surgeMult : 1.0);
+        const weeklyDemand = dailyVelocity * 7;
+        const reorderUnits = Math.max(0, Math.round(weeklyDemand - item.stock));
+
+        if (!suppliers[item.supplier]) {
+          suppliers[item.supplier] = {
+            name: item.supplier,
+            items: [],
+            totalUnits: 0,
+            subtotalCost: 0
+          };
+        }
+
+        if (reorderUnits > 0) {
+          const itemCost = reorderUnits * item.cost;
+          const itemSales = reorderUnits * item.sell;
+          suppliers[item.supplier].items.push({
+            sku: item.sku,
+            name: item.name,
+            units: reorderUnits,
+            unit: item.unit,
+            cost: itemCost,
+            unitCost: item.cost
+          });
+          suppliers[item.supplier].totalUnits += reorderUnits;
+          suppliers[item.supplier].subtotalCost += itemCost;
+          totalUnits += reorderUnits;
+          totalSpend += itemCost;
+          totalSales += itemSales;
+        }
+      });
+
+      const grossProfit = totalSales - totalSpend;
+      const marginPct = totalSales > 0 ? (grossProfit / totalSales * 100).toFixed(1) : '0.0';
+
+      kpiUnits.textContent = totalUnits + ' units';
+      kpiSpend.textContent = 'R' + totalSpend.toLocaleString('en-ZA', { minimumFractionDigits: 2 });
+      kpiRev.textContent = 'R' + totalSales.toLocaleString('en-ZA', { minimumFractionDigits: 2 });
+      kpiProfit.textContent = 'R' + grossProfit.toLocaleString('en-ZA', { minimumFractionDigits: 2 });
+      kpiMargin.textContent = `• ${marginPct}% Gross Margin`;
+
+      container.innerHTML = Object.values(suppliers).map(sup => {
+        if (sup.totalUnits === 0) return '';
+
+        return `
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800/80 mb-3">
+              <div>
+                <h4 class="font-bold text-white text-base flex items-center gap-2">
+                  <i data-lucide="building" class="w-4 h-4 text-emerald-400"></i>
+                  <span>${sup.name}</span>
+                </h4>
+                <span class="text-xs font-mono text-slate-400">${sup.totalUnits} Units &bull; Wholesale Spend: <strong class="text-amber-400">R${sup.subtotalCost.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</strong></span>
+              </div>
+              <button onclick="previewSupplierOrder('${sup.name}')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono flex items-center gap-1.5 transition-all self-start sm:self-auto">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>View Order Sheet</span>
+              </button>
+            </div>
+
+            <div class="space-y-1.5 text-xs font-mono">
+              ${sup.items.map(i => `
+                <div class="flex items-center justify-between text-slate-300">
+                  <span class="text-slate-200 font-medium">${i.units}x ${i.name}</span>
+                  <span class="text-slate-400">R${i.cost.toFixed(2)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
         `;
       }).join('');
 
       lucide.createIcons();
     }
 
-    function setSimulationMode(surge) {
-      isSurge = surge;
-      const surgeBtn = document.getElementById('btn-surge');
-      const normalBtn = document.getElementById('btn-normal');
-      const label = document.getElementById('cycle-label');
+    // ==========================================
+    // Invoices & Slips Hub
+    // ==========================================
+    function renderSlipsArchive() {
+      const container = document.getElementById('slips-history-container');
 
-      if (isSurge) {
-        surgeBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
-        normalBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
-        label.textContent = 'Days 1–6 (SASSA Grant Payout Week)';
-        label.className = 'text-amber-300 font-bold';
-      } else {
-        normalBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
-        surgeBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
-        label.textContent = 'Mid-Month (Normal Baseline Demand)';
-        label.className = 'text-emerald-300 font-bold';
+      if (slipsArchive.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-slate-500 text-xs font-mono">
+            <i data-lucide="receipt" class="w-8 h-8 mx-auto mb-2 opacity-30"></i>
+            <p>No transactions recorded in this session yet.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
       }
 
-      renderInventory();
+      container.innerHTML = slipsArchive.map((slip, idx) => {
+        return `
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex items-center justify-between hover:border-slate-700 transition-all text-xs font-mono">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-bold text-white">${slip.id}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">${slip.paymentMethod}</span>
+              </div>
+              <p class="text-slate-400 text-[11px]">${slip.date} &bull; ${slip.customer}</p>
+              <p class="text-slate-300 text-[11px] mt-0.5">Amount: <strong class="text-emerald-400">R${slip.total.toFixed(2)}</strong> (${slip.items.length} items)</p>
+            </div>
+            <button onclick="reprintSlip(${idx})" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1.5 transition-all">
+              <i data-lucide="printer" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Reprint Slip</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
     }
 
+    // ==========================================
+    // Payment Processing Logic (Card / Luhn / Cash)
+    // ==========================================
+    function validateLuhn(numStr) {
+      const clean = numStr.replace(/\D/g, '');
+      if (clean.length < 13 || clean.length > 19) return false;
+      let sum = 0;
+      let isSecond = false;
+      for (let i = clean.length - 1; i >= 0; i--) {
+        let d = parseInt(clean[i], 10);
+        if (isSecond) {
+          d *= 2;
+          if (d > 9) d -= 9;
+        }
+        sum += d;
+        isSecond = !isSecond;
+      }
+      return (sum % 10 === 0);
+    }
+
+    function handleCardNumberInput(input) {
+      let val = input.value.replace(/\D/g, '');
+      let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+      input.value = formatted;
+
+      const brandEl = document.getElementById('detected-card-brand');
+      const luhnEl = document.getElementById('card-luhn-status');
+
+      if (val.startsWith('6005') || val.startsWith('5050')) {
+        brandEl.textContent = 'SASSA POSTBANK GOLD CARD';
+        brandEl.className = 'text-amber-400 font-bold text-[10px]';
+      } else if (val.startsWith('4')) {
+        brandEl.textContent = 'VISA DEBIT/CREDIT';
+        brandEl.className = 'text-blue-400 font-bold text-[10px]';
+      } else if (val.startsWith('51') || val.startsWith('52') || val.startsWith('53') || val.startsWith('54') || val.startsWith('55')) {
+        brandEl.textContent = 'MASTERCARD';
+        brandEl.className = 'text-orange-400 font-bold text-[10px]';
+      } else {
+        brandEl.textContent = 'STANDARD EMV CARD';
+        brandEl.className = 'text-slate-400 font-bold text-[10px]';
+      }
+
+      if (validateLuhn(val)) {
+        luhnEl.textContent = '✓ Valid Card Checksum (Luhn Verified)';
+        luhnEl.className = 'text-[10px] text-emerald-400 block mt-1';
+      } else {
+        luhnEl.textContent = '✗ Invalid Card Checksum';
+        luhnEl.className = 'text-[10px] text-rose-400 block mt-1';
+      }
+    }
+
+    function openPaymentModal(mode) {
+      let total = 0;
+      cart.forEach(item => {
+        const prod = inventory.find(p => p.sku === item.sku);
+        if (prod) total += item.qty * prod.sell;
+      });
+
+      if (total <= 0) return;
+
+      document.getElementById('modal-pay-amount').textContent = 'R' + total.toFixed(2);
+      document.getElementById('pay-cash-amount').value = Math.ceil(total);
+      calculateChange();
+
+      selectPayTab(mode);
+      openModal('modal-payment');
+    }
+
+    function selectPayTab(mode) {
+      currentPayMode = mode;
+      const cardTab = document.getElementById('btn-paytab-card');
+      const sassaTab = document.getElementById('btn-paytab-sassa');
+      const cashTab = document.getElementById('btn-paytab-cash');
+      const cardForm = document.getElementById('payform-card');
+      const cashForm = document.getElementById('payform-cash');
+
+      [cardTab, sassaTab, cashTab].forEach(btn => {
+        btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white';
+      });
+
+      if (mode === 'CARD') {
+        cardTab.className = 'px-3 py-1.5 rounded-lg font-bold bg-emerald-500 text-slate-950';
+        cardForm.classList.remove('hidden');
+        cashForm.classList.add('hidden');
+        document.getElementById('pay-card-num').value = '4532 0151 1283 0366';
+        handleCardNumberInput(document.getElementById('pay-card-num'));
+      } else if (mode === 'SASSA') {
+        sassaTab.className = 'px-3 py-1.5 rounded-lg font-bold bg-amber-500 text-slate-950';
+        cardForm.classList.remove('hidden');
+        cashForm.classList.add('hidden');
+        document.getElementById('pay-card-num').value = '6005 8291 0482 9104';
+        handleCardNumberInput(document.getElementById('pay-card-num'));
+      } else {
+        cashTab.className = 'px-3 py-1.5 rounded-lg font-bold bg-emerald-500 text-slate-950';
+        cardForm.classList.add('hidden');
+        cashForm.classList.remove('hidden');
+      }
+    }
+
+    function calculateChange() {
+      let total = 0;
+      cart.forEach(item => {
+        const prod = inventory.find(p => p.sku === item.sku);
+        if (prod) total += item.qty * prod.sell;
+      });
+
+      const tendered = parseFloat(document.getElementById('pay-cash-amount').value) || 0;
+      const change = Math.max(0, tendered - total);
+      document.getElementById('cash-change-due').textContent = 'R' + change.toFixed(2);
+    }
+
+    function setCashTender(amount) {
+      document.getElementById('pay-cash-amount').value = amount;
+      calculateChange();
+    }
+
+    function setExactCash() {
+      let total = 0;
+      cart.forEach(item => {
+        const prod = inventory.find(p => p.sku === item.sku);
+        if (prod) total += item.qty * prod.sell;
+      });
+      document.getElementById('pay-cash-amount').value = total.toFixed(2);
+      calculateChange();
+    }
+
+    function processPayment(actionType) {
+      let total = 0;
+      const itemsList = [];
+
+      cart.forEach(item => {
+        const prod = inventory.find(p => p.sku === item.sku);
+        if (prod) {
+          total += item.qty * prod.sell;
+          itemsList.push({
+            sku: prod.sku,
+            name: prod.name,
+            qty: item.qty,
+            price: prod.sell,
+            total: item.qty * prod.sell
+          });
+          // Deduct from stock
+          prod.stock = Math.max(0, prod.stock - item.qty);
+        }
+      });
+
+      saveInventory(inventory);
+
+      const slipId = 'SPZ-' + Math.floor(100000 + Math.random() * 900000);
+      const now = new Date();
+      const dateStr = now.toISOString().replace('T', ' ').substring(0, 19);
+
+      let methodStr = 'CARD - EMV CONTACTLESS';
+      let cardPan = '4532 **** **** 0366';
+      let authCode = 'AUTH' + Math.floor(100000 + Math.random() * 900000);
+
+      if (actionType === 'CARD_TAP') {
+        methodStr = 'CARD - NFC TAP-TO-PAY';
+        cardPan = document.getElementById('pay-card-num').value.substring(0, 4) + ' **** **** ' + document.getElementById('pay-card-num').value.slice(-4);
+      } else if (actionType === 'CARD_CHIP') {
+        methodStr = 'CARD - EMV CHIP & PIN';
+        cardPan = document.getElementById('pay-card-num').value.substring(0, 4) + ' **** **** ' + document.getElementById('pay-card-num').value.slice(-4);
+      } else if (currentPayMode === 'SASSA') {
+        methodStr = 'SASSA POSTBANK GOLD CARD';
+        cardPan = '6005 **** **** 9104';
+      } else if (actionType === 'CASH') {
+        const tendered = parseFloat(document.getElementById('pay-cash-amount').value) || total;
+        methodStr = `CASH (Paid: R${tendered.toFixed(2)}, Change: R${(tendered - total).toFixed(2)})`;
+      }
+
+      const newSlip = {
+        id: slipId,
+        type: 'SLIP',
+        date: dateStr,
+        customer: document.getElementById('pay-card-name')?.value || 'Township Customer',
+        paymentMethod: methodStr,
+        cardPan: cardPan,
+        authCode: authCode,
+        items: itemsList,
+        total: total
+      };
+
+      slipsArchive.unshift(newSlip);
+      saveSlips(slipsArchive);
+
+      cart = [];
+      closeModal('modal-payment');
+      renderAll();
+
+      // Show printed slip preview modal
+      renderThermalSlipModal(newSlip);
+    }
+
+    // ==========================================
+    // Thermal Receipt Slip & Tax Invoice Generator
+    // ==========================================
+    function renderThermalSlipModal(slip) {
+      const container = document.getElementById('preview-modal-content');
+      document.getElementById('preview-modal-title').textContent = `Thermal Till Slip #${slip.id}`;
+
+      const vat = slip.total * 0.15;
+      const subtotal = slip.total - vat;
+
+      const html = `
+        <div class="receipt-paper thermal-mode p-6 text-slate-900 w-full max-w-sm rounded shadow-2xl font-mono text-xs">
+          <div class="text-center pb-3 border-b border-dashed border-stone-400">
+            <h2 class="font-extrabold text-sm uppercase tracking-wider">🏪 Soweto Smart Spaza</h2>
+            <p class="text-[10px] text-stone-600">Vilakazi Street, Orlando West, Soweto</p>
+            <p class="text-[10px] text-stone-600">VAT REG: 4920192841 &bull; Tel: (011) 935-1829</p>
+          </div>
+
+          <div class="py-2.5 text-[10px] space-y-0.5 border-b border-dashed border-stone-400">
+            <div class="flex justify-between"><span>Date/Time:</span><span>${slip.date}</span></div>
+            <div class="flex justify-between"><span>Slip No:</span><span>#${slip.id}</span></div>
+            <div class="flex justify-between"><span>Cashier:</span><span>Bonga M. (Till 01)</span></div>
+            <div class="flex justify-between"><span>Customer:</span><span>${slip.customer}</span></div>
+          </div>
+
+          <div class="py-3 border-b border-dashed border-stone-400">
+            <table class="w-full text-left text-[10px]">
+              <thead>
+                <tr class="border-b border-stone-300">
+                  <th class="pb-1">Item</th>
+                  <th class="pb-1 text-center">Qty</th>
+                  <th class="pb-1 text-right">Price</th>
+                  <th class="pb-1 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-stone-200">
+                ${slip.items.map(i => `
+                  <tr>
+                    <td class="py-1 pr-1">${i.name}</td>
+                    <td class="py-1 text-center">${i.qty}</td>
+                    <td class="py-1 text-right">R${i.price.toFixed(2)}</td>
+                    <td class="py-1 text-right font-bold">R${(i.qty * i.price).toFixed(2)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="py-2.5 space-y-1 text-[11px] border-b border-dashed border-stone-400">
+            <div class="flex justify-between text-stone-600"><span>Subtotal (Excl. VAT):</span><span>R${subtotal.toFixed(2)}</span></div>
+            <div class="flex justify-between text-stone-600"><span>VAT (15% Included):</span><span>R${vat.toFixed(2)}</span></div>
+            <div class="flex justify-between font-extrabold text-sm pt-1 border-t border-stone-400">
+              <span>TOTAL PAID:</span><span>R${slip.total.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div class="py-2 text-[10px] space-y-0.5 border-b border-dashed border-stone-400">
+            <div><strong>PAYMENT:</strong> ${slip.paymentMethod}</div>
+            ${slip.cardPan ? `<div><strong>CARD PAN:</strong> ${slip.cardPan}</div>` : ''}
+            ${slip.authCode ? `<div><strong>AUTH CODE:</strong> ${slip.authCode} (APPROVED)</div>` : ''}
+            <div><strong>SWITCH:</strong> BankservAfrica / PASA Settlement</div>
+          </div>
+
+          <div class="text-center pt-3 text-[10px] space-y-1">
+            <p class="font-bold">SIYABONGA! ENKOSI! DANKIE!</p>
+            <p class="text-stone-600">Thank you for supporting Township Retail</p>
+            <p class="text-[9px] text-stone-500">Keep slip for returns within 7 days</p>
+            <div class="font-mono text-center tracking-widest text-[9px] pt-1">
+              ||| | ||||| ||| |||| || ||||| ||
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+      document.getElementById('printable-area').innerHTML = html;
+      openModal('modal-preview');
+    }
+
+    function reprintSlip(idx) {
+      const slip = slipsArchive[idx];
+      if (slip) renderThermalSlipModal(slip);
+    }
+
+    function handleCreateInvoice(e) {
+      e.preventDefault();
+      const clientName = document.getElementById('inv-client-name').value;
+      const clientAddr = document.getElementById('inv-client-addr').value;
+      const clientTax = document.getElementById('inv-client-tax').value;
+      const terms = document.getElementById('inv-terms').value;
+      const pkg = document.getElementById('inv-package').value;
+
+      let items = [];
+      if (pkg === 'creche') {
+        items = [
+          { sku: 'MZ-125', name: 'White Star Super Maize Meal (12.5kg)', qty: 5, price: 155.0 },
+          { sku: 'SG-02K', name: 'Huletts White Sugar (2kg)', qty: 10, price: 59.9 },
+          { sku: 'MK-06P', name: 'First Choice Long Life Milk (6x1L)', qty: 4, price: 122.0 },
+          { sku: 'EG-30T', name: 'Nulaid Large Eggs Tray (30pk)', qty: 6, price: 89.9 }
+        ];
+      } else if (pkg === 'feeding') {
+        items = [
+          { sku: 'MZ-125', name: 'White Star Super Maize Meal (12.5kg)', qty: 10, price: 155.0 },
+          { sku: 'CO-02L', name: 'Sunfoil Sunflower Cooking Oil (2L)', qty: 8, price: 79.9 },
+          { sku: 'RC-10K', name: 'Tastic Parboiled Rice (10kg)', qty: 6, price: 215.0 },
+          { sku: 'PL-400', name: 'Lucky Star Pilchards in Tomato (400g)', qty: 48, price: 27.5 }
+        ];
+      } else {
+        // Use cart
+        items = cart.map(c => {
+          const p = inventory.find(i => i.sku === c.sku);
+          return { sku: p.sku, name: p.name, qty: c.qty, price: p.sell };
+        });
+        if (items.length === 0) {
+          alert('Cart is empty! Select a preset package.');
+          return;
+        }
+      }
+
+      const total = items.reduce((sum, i) => sum + (i.qty * i.price), 0);
+      const vat = total * 0.15;
+      const subtotal = total - vat;
+      const invNo = 'INV-' + Math.floor(100000 + Math.random() * 900000);
+      const today = new Date().toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+      const due = new Date(Date.now() + 7 * 86400000).toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      const invoiceHtml = `
+        <div class="a4-mode bg-white text-slate-900 p-8 rounded shadow-2xl font-sans text-xs w-full max-w-2xl">
+          <div class="flex justify-between items-start border-b-2 border-emerald-600 pb-4 mb-6">
+            <div>
+              <h1 class="text-2xl font-extrabold text-emerald-700 tracking-tight">SPAZA-SMART RETAIL & TRADING</h1>
+              <p class="text-xs text-slate-600">Informal Retail & Wholesale Decision Support (Pty) Ltd</p>
+              <p class="text-xs text-slate-600">1824 Vilakazi Street, Soweto, Johannesburg, 1804</p>
+              <p class="text-xs text-slate-600">VAT Reg: 4920192841 &bull; Reg No: 2024/918274/07</p>
+            </div>
+            <div class="text-right">
+              <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 font-bold rounded text-sm uppercase">Tax Invoice</span>
+              <p class="font-mono text-xs font-bold text-slate-800 mt-2">#${invNo}</p>
+              <p class="text-xs text-slate-500">Date: ${today}</p>
+              <p class="text-xs text-slate-500">Due Date: ${due}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6 p-4 bg-slate-50 rounded-xl">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Billed To (Client):</span>
+              <h4 class="font-bold text-slate-800 text-sm">${clientName}</h4>
+              <p class="text-xs text-slate-600">${clientAddr}</p>
+              <p class="text-xs text-slate-600">Tax / NPO Ref: <strong>${clientTax}</strong></p>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Settlement Details:</span>
+              <p class="text-xs text-slate-600">Terms: <strong>${terms}</strong></p>
+              <p class="text-xs text-slate-600">Currency: <strong>South African Rand (ZAR)</strong></p>
+            </div>
+          </div>
+
+          <table class="w-full text-left text-xs mb-6 font-mono">
+            <thead>
+              <tr class="border-b-2 border-slate-300 bg-slate-100 text-slate-700">
+                <th class="p-2">SKU</th>
+                <th class="p-2">Item Description</th>
+                <th class="p-2 text-center">Qty</th>
+                <th class="p-2 text-right">Unit Price</th>
+                <th class="p-2 text-right">Total (ZAR)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+              ${items.map(i => `
+                <tr>
+                  <td class="p-2 font-bold text-slate-600">${i.sku}</td>
+                  <td class="p-2">${i.name}</td>
+                  <td class="p-2 text-center">${i.qty}</td>
+                  <td class="p-2 text-right">R${i.price.toFixed(2)}</td>
+                  <td class="p-2 text-right font-bold">R${(i.qty * i.price).toFixed(2)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="flex justify-end mb-6">
+            <div class="w-64 space-y-1.5 text-xs font-mono">
+              <div class="flex justify-between text-slate-600">
+                <span>Subtotal (Excl. VAT):</span>
+                <span>R${subtotal.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between text-slate-600">
+                <span>VAT (15% Included):</span>
+                <span>R${vat.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between font-extrabold text-sm text-slate-900 pt-2 border-t-2 border-slate-300">
+                <span>Total Due:</span>
+                <span class="text-emerald-700">R${total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 text-xs mb-6">
+            <h5 class="font-bold text-emerald-900 mb-1">Instant EFT Banking Details:</h5>
+            <div class="grid grid-cols-2 gap-2 text-slate-700 font-mono text-[11px]">
+              <div>Bank: <strong>Capitec Business / First National Bank</strong></div>
+              <div>Account Name: <strong>Spaza-Smart Retail Enterprises</strong></div>
+              <div>Account Number: <strong>1058291048</strong></div>
+              <div>Branch Code: <strong>250655 (FNB) / 470010 (Capitec)</strong></div>
+              <div>Payment Reference: <strong>${invNo}</strong></div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-end pt-4 border-t border-slate-300 text-slate-500 text-[10px]">
+            <div>
+              <p>Issued by: Bonga Manzini (UNISA Informatics)</p>
+              <p>Thank you for supporting Township Enterprise</p>
+            </div>
+            <div class="text-right">
+              <p class="font-mono">Authorized Signature: _______________________</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('preview-modal-title').textContent = `Tax Invoice #${invNo}`;
+      document.getElementById('preview-modal-content').innerHTML = invoiceHtml;
+      document.getElementById('printable-area').innerHTML = invoiceHtml;
+      openModal('modal-preview');
+    }
+
+    function printWeeklyRequisition() {
+      let totalUnits = 0;
+      let totalSpend = 0;
+      const suppliers = {};
+
+      inventory.forEach(item => {
+        const dailyVelocity = item.baseSales * (isSurge ? item.surgeMult : 1.0);
+        const weeklyDemand = dailyVelocity * 7;
+        const reorderUnits = Math.max(0, Math.round(weeklyDemand - item.stock));
+
+        if (!suppliers[item.supplier]) {
+          suppliers[item.supplier] = [];
+        }
+
+        if (reorderUnits > 0) {
+          const cost = reorderUnits * item.cost;
+          suppliers[item.supplier].push({
+            sku: item.sku,
+            name: item.name,
+            qty: reorderUnits,
+            unit: item.unit,
+            cost: cost
+          });
+          totalUnits += reorderUnits;
+          totalSpend += cost;
+        }
+      });
+
+      const today = new Date().toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      const html = `
+        <div class="a4-mode bg-white text-slate-900 p-8 rounded shadow-2xl font-mono text-xs w-full max-w-2xl">
+          <div class="border-b-2 border-stone-800 pb-3 mb-4">
+            <h2 class="text-xl font-extrabold uppercase">🛒 Spaza Weekly Wholesaler Requisition</h2>
+            <p class="text-xs text-stone-600">Cycle Status: <strong>${isSurge ? '🔥 SASSA Grant Payout Week (High Surge)' : '🟢 Mid-Month Normal'}</strong></p>
+            <p class="text-xs text-stone-600">Generated: ${today} &bull; Total Units: ${totalUnits} &bull; Estimated Spend: <strong>R${totalSpend.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</strong></p>
+          </div>
+
+          ${Object.entries(suppliers).map(([sup, items]) => `
+            <div class="mb-5">
+              <h3 class="font-extrabold text-sm uppercase text-emerald-800 bg-stone-100 p-1.5 border-l-4 border-emerald-600 mb-2">
+                Wholesaler: ${sup}
+              </h3>
+              <table class="w-full text-left text-xs mb-2">
+                <thead>
+                  <tr class="border-b border-stone-300">
+                    <th class="pb-1">SKU</th>
+                    <th class="pb-1">Description</th>
+                    <th class="pb-1 text-center">Order Qty</th>
+                    <th class="pb-1 text-right">Est. Cost</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200">
+                  ${items.map(i => `
+                    <tr>
+                      <td class="py-1 font-bold">${i.sku}</td>
+                      <td class="py-1">${i.name}</td>
+                      <td class="py-1 text-center font-bold">${i.qty} ${i.unit}</td>
+                      <td class="py-1 text-right">R${i.cost.toFixed(2)}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `).join('')}
+
+          <div class="border-t-2 border-stone-800 pt-3 flex justify-between text-xs font-bold">
+            <span>CONSOLIDATED WHOLESALE REQUISITION TOTAL:</span>
+            <span>R${totalSpend.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('preview-modal-title').textContent = 'Weekly Wholesaler Requisition';
+      document.getElementById('preview-modal-content').innerHTML = html;
+      document.getElementById('printable-area').innerHTML = html;
+      openModal('modal-preview');
+    }
+
+    function previewSupplierOrder(supName) {
+      printWeeklyRequisition();
+    }
+
+    function executeBrowserPrint() {
+      window.print();
+    }
+
+    // ==========================================
+    // Add SKU Modal Handler
+    // ==========================================
+    function handleAddNewProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('add-prod-name').value;
+      const sku = document.getElementById('add-prod-sku').value.toUpperCase();
+      const cat = document.getElementById('add-prod-cat').value;
+      const cost = parseFloat(document.getElementById('add-prod-cost').value);
+      const sell = parseFloat(document.getElementById('add-prod-sell').value);
+      const stock = parseInt(document.getElementById('add-prod-stock').value, 10);
+      const unit = document.getElementById('add-prod-unit').value;
+      const supplier = document.getElementById('add-prod-supplier').value;
+      const expiry = document.getElementById('add-prod-expiry').value;
+
+      const expiryDt = new Date(expiry);
+      const today = new Date();
+      const daysLeft = Math.ceil((expiryDt - today) / (1000 * 60 * 60 * 24));
+
+      const newProduct = {
+        sku: sku,
+        name: name,
+        category: cat,
+        stock: stock,
+        unit: unit,
+        baseSales: 3.0,
+        surgeMult: 2.5,
+        cost: cost,
+        sell: sell,
+        supplier: supplier,
+        leadDays: 2,
+        batchNo: 'LOT-' + sku + '01',
+        expiryDate: expiry,
+        daysUntilExpiry: daysLeft
+      };
+
+      inventory.push(newProduct);
+      saveInventory(inventory);
+      closeModal('modal-add-product');
+      renderAll();
+      alert(`Product ${name} (${sku}) successfully added to Spaza-Smart inventory!`);
+    }
+
+    function resetToSampleData() {
+      if (confirm('Reset inventory and demo data back to default South African staple basket?')) {
+        inventory = JSON.parse(JSON.stringify(INITIAL_INVENTORY));
+        saveInventory(inventory);
+        renderAll();
+      }
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      lucide.createIcons();
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function renderAll() {
+      renderPosCatalog();
+      renderCart();
+      renderInventoryTable();
+      renderExpiryCards();
+      renderWeeklyOrders();
+      renderSlipsArchive();
+      lucide.createIcons();
+    }
+
+    // Initialize application on load
     window.addEventListener('DOMContentLoaded', () => {
-      renderInventory();
+      // Set default add product expiry date 30 days ahead
+      const nextMonth = new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0];
+      const expiryInput = document.getElementById('add-prod-expiry');
+      if (expiryInput) expiryInput.value = nextMonth;
+
+      renderAll();
     });
   </script>
 </body>
