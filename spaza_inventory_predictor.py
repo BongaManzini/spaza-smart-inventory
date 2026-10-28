@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🛒 Spaza-Smart Inventory Predictor & Retail Management System
+ Spaza-Smart Inventory Predictor & Retail Management System
 South African Informal Retail Decision-Support & POS Engine
 
 Features:
@@ -214,7 +214,7 @@ def print_thermal_till_slip(
 
     lines = []
     lines.append("=" * 42)
-    lines.append("     🏪 SOWETO SMART SPAZA & WHOLESALE     ")
+    lines.append("      SOWETO SMART SPAZA & WHOLESALE     ")
     lines.append("       Vilakazi Street, Orlando West       ")
     lines.append("            Soweto, Gauteng 1804           ")
     lines.append("           VAT REG: 4920192841             ")
@@ -318,8 +318,8 @@ def print_cli_report():
     today = datetime.date.today()
     surge = is_sassa_grant_week(today)
     print("=" * 82)
-    print("🛒 SPAZA-SMART INVENTORY DECISION SUPPORT & RETAIL ENGINE")
-    print(f"Calendar Date: {today} | SASSA Cycle: {'🔥 HIGH SURGE ACTIVE (Days 1-6)' if surge else '🟢 NORMAL DEMAND'}")
+    print(" SPAZA-SMART INVENTORY DECISION SUPPORT & RETAIL ENGINE")
+    print(f"Calendar Date: {today} | SASSA Cycle: {' HIGH SURGE ACTIVE (Days 1-6)' if surge else ' NORMAL DEMAND'}")
     print("=" * 82)
     print(f"{'SKU':<8} | {'Item Name':<30} | {'Stock':<5} | {'Veloc':<6} | {'Days':<5} | {'Expiry':<10} | {'Alert'}")
     print("-" * 82)
@@ -327,17 +327,17 @@ def print_cli_report():
     forecasts = forecast_stockouts(today)
     for f in forecasts:
         if f["needs_urgent_reorder"]:
-            alert = "🚨 REORDER"
+            alert = " REORDER"
         elif f["expiry_status"] == "URGENT_CLEAR":
-            alert = "⚠️ EXPIRE SOON"
+            alert = "️ EXPIRE SOON"
         else:
-            alert = "✅ OK"
+            alert = " OK"
         print(f"{f['sku']:<8} | {f['name'][:30]:<30} | {f['current_stock']:<5} | {f['daily_velocity']:<6} | {f['days_of_stock']:<5} | {f['expiry_date']:<10} | {alert}")
     print("=" * 82)
 
     # Weekly Wholesaler Order Summary
     weekly = generate_weekly_order_summary(today)
-    print("\n📦 WEEKLY ORDER FORECAST (CONSOLIDATED WHOLESALER PURCHASES):")
+    print("\n WEEKLY ORDER FORECAST (CONSOLIDATED WHOLESALER PURCHASES):")
     print(f"Total Units to Order: {weekly['total_units_ordered']} units")
     print(f"Total Wholesaler Cost: R{weekly['total_order_spend_rand']:,.2f}")
     print(f"Projected Sales Value: R{weekly['total_projected_sales_rand']:,.2f}")
@@ -345,7 +345,7 @@ def print_cli_report():
     print("-" * 82)
     for sup, data in weekly["suppliers"].items():
         if data["total_units"] > 0:
-            print(f"  🏢 {sup:<26}: {data['total_units']:>3} units | Cost: R{data['subtotal_cost']:>8.2f}")
+            print(f"   {sup:<26}: {data['total_units']:>3} units | Cost: R{data['subtotal_cost']:>8.2f}")
             for itm in data["items"]:
                 print(f"     - {itm['name'][:30]:<30}: {itm['units']} {itm['unit']} (R{itm['cost']:,.2f})")
     print("=" * 82)
@@ -354,7 +354,7 @@ if __name__ == "__main__":
     if "--weekly" in sys.argv:
         summary = generate_weekly_order_summary()
         print("\n" + "="*50)
-        print("📊 SPAZA WEEKLY RESTOCK & PERFORMANCE SUMMARY")
+        print(" SPAZA WEEKLY RESTOCK & PERFORMANCE SUMMARY")
         print("="*50)
         for sup, data in summary["suppliers"].items():
             print(f"\nWholesaler: {sup} (Total: R{data['subtotal_cost']:,.2f})")
@@ -367,9 +367,9 @@ if __name__ == "__main__":
     elif "--invoice" in sys.argv:
         print(print_formal_tax_invoice())
     elif "--expiry" in sys.argv:
-        print("\n⚠️ PERISHABLE & EXPIRY TRACKING AUDIT:")
+        print("\n️ PERISHABLE & EXPIRY TRACKING AUDIT:")
         for itm in forecast_stockouts():
-            status_symbol = "🚨" if itm["days_to_expiry"] <= 3 else "✅"
+            status_symbol = "" if itm["days_to_expiry"] <= 3 else ""
             print(f"{status_symbol} {itm['name'][:32]:<32} | Batch: {itm['batch_no']} | Expires: {itm['expiry_date']} ({itm['days_to_expiry']} days left)")
     else:
         print_cli_report()

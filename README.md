@@ -1,4 +1,4 @@
-# 🛒 Spaza-Smart Retail Hub & Inventory Predictor
+# Spaza-Smart Retail Hub & Inventory Predictor
 
 > **Live Web Application**: [https://bongamanzini.github.io/spaza-smart-inventory/](https://bongamanzini.github.io/spaza-smart-inventory/)
 
@@ -8,7 +8,7 @@ Spaza-Smart connects staple inventory stockout prediction to the monthly **South
 
 ---
 
-## 🎯 The Informatics & Informal Economy Angle
+## The Informatics & Informal Economy Angle
 
 - **The Problem**: Informal township Spaza shop owners lose up to **18% of their gross monthly earnings** because they run out of basic staple goods (maize meal, cooking oil, bread, sugar) during days 1 to 6 of the month when millions of SASSA grant beneficiaries receive and spend their funds. Furthermore, up to **7% of inventory is lost to unnoticed perishable expiry** (bread, dairy, eggs), and manual paper till slips lead to bookkeeping reconciliation errors.
 - **The Informatics Solution**:
@@ -20,28 +20,28 @@ Spaza-Smart connects staple inventory stockout prediction to the monthly **South
 
 ---
 
-## 🏗️ Multi-Platform Architecture
+## ️ Multi-Platform Architecture
 
 ```
 Spaza-Smart-Inventory/
-├── index.html                  # Responsive Web POS & Decision Support App (Live on GitHub Pages)
+├── index.html         # Responsive Web POS & Decision Support App (Live on GitHub Pages)
 ├── spaza_inventory_predictor.py # Enhanced Python CLI Engine & Report Formatter
-├── requirements.txt            # Python dependencies (pandas, numpy)
+├── requirements.txt      # Python dependencies (pandas, numpy)
 │
-├── terminal-cpp/               # ⚡ High-Performance Embedded C++17 POS Terminal Engine
-│   ├── CMakeLists.txt          # Modern CMake build configuration
-│   ├── Makefile                # Fast 'make' build script
-│   └── src/
-│       ├── main.cpp            # Interactive terminal POS & CLI flags (--demo, --pay, --invoice)
-│       ├── Models.hpp          # Product, Cart, Payment & Invoice data structures
-│       ├── PaymentGateway.hpp  # Luhn algorithm mod-10 & BankservAfrica / PASA gateway
-│       ├── PaymentGateway.cpp  # Card scheme detection (Visa, Mastercard, SASSA Gold Card)
-│       ├── ReceiptPrinter.hpp  # ESC/POS 80mm thermal slip & A4 Tax Invoice formatter
-│       ├── ReceiptPrinter.cpp  # Receipt formatting logic
-│       ├── InventoryEngine.hpp # Stock velocity & perishable expiry auditor
-│       └── InventoryEngine.cpp # Inventory math & markdown logic
+├── terminal-cpp/        # High-Performance Embedded C++17 POS Terminal Engine
+│  ├── CMakeLists.txt     # Modern CMake build configuration
+│  ├── Makefile        # Fast 'make' build script
+│  └── src/
+│    ├── main.cpp      # Interactive terminal POS & CLI flags (--demo, --pay, --invoice)
+│    ├── Models.hpp     # Product, Cart, Payment & Invoice data structures
+│    ├── PaymentGateway.hpp # Luhn algorithm mod-10 & BankservAfrica / PASA gateway
+│    ├── PaymentGateway.cpp # Card scheme detection (Visa, Mastercard, SASSA Gold Card)
+│    ├── ReceiptPrinter.hpp # ESC/POS 80mm thermal slip & A4 Tax Invoice formatter
+│    ├── ReceiptPrinter.cpp # Receipt formatting logic
+│    ├── InventoryEngine.hpp # Stock velocity & perishable expiry auditor
+│    └── InventoryEngine.cpp # Inventory math & markdown logic
 │
-└── mobile-kotlin/              # 📱 Native Android Kotlin Mobile App (Jetpack Compose)
+└── mobile-kotlin/       # Native Android Kotlin Mobile App (Jetpack Compose)
     ├── build.gradle.kts        # Root Gradle build script
     ├── settings.gradle.kts     # Project settings
     ├── README.md               # Mobile app guide & hardware POS setup
@@ -67,7 +67,7 @@ Spaza-Smart-Inventory/
 
 ---
 
-## 🛠️ Feature Breakdown
+## ️ Feature Breakdown
 
 ### 1. Point of Sale (POS) & Card Payments
 - **Card Scheme Support**: Visa, Mastercard, and **SASSA Postbank Gold Debit Cards** (BIN `6005`, `5050`, `6011`).
@@ -92,9 +92,9 @@ Spaza-Smart-Inventory/
 ### 3. Perishable Expiry Tracker & Wastage Mitigation
 - Batch monitoring (`LOT-MZ881`, `LOT-BR042`, etc.) with countdown of days until expiry.
 - Color-coded alert badges:
-  - 🔴 **Critical ($\le 3$ days)**: Immediate clearance recommendation.
-  - 🟡 **Warning ($4-7$ days)**: Monitor rotation.
-  - 🟢 **Safe ($> 7$ days)**: Extended shelf life.
+  -  **Critical ($\le 3$ days)**: Immediate clearance recommendation.
+  -  **Warning ($4-7$ days)**: Monitor rotation.
+  -  **Safe ($> 7$ days)**: Extended shelf life.
 - **1-Click Clearance Markdown**: Reduces retail price by 25% or 10% to sell perishables before expiry.
 
 ### 4. Weekly Wholesaler Order Consolidation
@@ -107,11 +107,11 @@ Spaza-Smart-Inventory/
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Web Application (No build required)
 Simply open `index.html` in any modern web browser or visit the live deployment:
-👉 **[https://bongamanzini.github.io/spaza-smart-inventory/](https://bongamanzini.github.io/spaza-smart-inventory/)**
+ **[https://bongamanzini.github.io/spaza-smart-inventory/](https://bongamanzini.github.io/spaza-smart-inventory/)**
 
 ---
 
@@ -169,7 +169,7 @@ The APK will be generated at `mobile-kotlin/app/build/outputs/apk/debug/app-debu
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
 - **Web Frontend**: HTML5, Vanilla JavaScript (ESNext), Tailwind CSS, Lucide Icons, CSS `@media print`
 - **Embedded Engine**: C++17, STL, POSIX, CMake, Make
@@ -179,9 +179,9 @@ The APK will be generated at `mobile-kotlin/app/build/outputs/apk/debug/app-debu
 
 ---
 
-## 👨‍💻 Author
+## ‍ Author
 
-**Bonga Manzini**  
-BSc Informatics – University of South Africa (UNISA)  
-Portfolio: [https://bongamanzini.github.io/portfolio/](https://bongamanzini.github.io/portfolio/)  
+**Bonga Manzini** 
+BSc Informatics – University of South Africa (UNISA) 
+Portfolio: [https://bongamanzini.github.io/portfolio/](https://bongamanzini.github.io/portfolio/) 
 GitHub: [https://github.com/BongaManzini](https://github.com/BongaManzini)

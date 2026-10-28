@@ -1,10 +1,10 @@
-# 📱 Spaza-Smart Mobile POS & Inventory (Android Kotlin)
+# Spaza-Smart Mobile POS & Inventory (Android Kotlin)
 
 An enterprise-ready, township-tailored Android Mobile Point-of-Sale (POS) and inventory decision-support system written in **Modern Kotlin** with **Jetpack Compose** and **Material 3**.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 1. **Card & Contactless Payments**:
    - **NFC Tap-to-Phone**: Simulates contactless card acceptance (Visa, Mastercard, SASSA Postbank Gold Card).
@@ -33,7 +33,7 @@ An enterprise-ready, township-tailored Android Mobile Point-of-Sale (POS) and in
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## ️ Tech Stack & Architecture
 
 - **Language**: Kotlin 1.9+
 - **UI Framework**: Android Jetpack Compose (BOM 2024.06.00), Material 3
@@ -43,7 +43,7 @@ An enterprise-ready, township-tailored Android Mobile Point-of-Sale (POS) and in
 
 ---
 
-## 📦 How to Build & Run
+## How to Build & Run
 
 ### In Android Studio:
 1. Open Android Studio -> **File > Open...** -> Select the `mobile-kotlin` directory.

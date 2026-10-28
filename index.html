@@ -102,7 +102,7 @@
           <span class="text-xs font-mono text-slate-400 hidden sm:inline">SA Informatics Master Suite</span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
-          <span>🛒 Spaza-Smart Retail Hub & Till POS</span>
+          <span> Spaza-Smart Retail Hub & Till POS</span>
         </h1>
         <p class="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl font-light">
           Forecasting staple grocery stockouts using SASSA grant cycles, integrated with Card & Cash Till POS, thermal slip printing, expiry tracking, and wholesale purchasing.
@@ -165,7 +165,7 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Macro Demand Simulation Context:</span>
-            <span id="sassa-status-pill" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">🔥 SURGE ACTIVE (300%-450%)</span>
+            <span id="sassa-status-pill" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30"> SURGE ACTIVE (300%-450%)</span>
           </div>
           <h2 class="text-sm sm:text-base font-bold text-white mt-0.5">
             Disbursement Cycle: <span id="cycle-label" class="text-amber-300">Days 1–6 (SASSA Grant Payout Week)</span>
@@ -589,7 +589,7 @@
             <input type="text" id="pay-card-num" value="4532 0151 1283 0366" oninput="handleCardNumberInput(this)" maxlength="19" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-emerald-500">
             <i data-lucide="credit-card" class="w-4 h-4 absolute right-3 top-2.5 text-slate-500"></i>
           </div>
-          <span id="card-luhn-status" class="text-[10px] text-emerald-400 block mt-1">✓ Valid Card Checksum (Luhn Verified)</span>
+          <span id="card-luhn-status" class="text-[10px] text-emerald-400 block mt-1"> Valid Card Checksum (Luhn Verified)</span>
         </div>
 
         <div>
@@ -998,14 +998,14 @@
         normalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
         label.textContent = 'Days 1–6 (SASSA Grant Payout Week)';
         label.className = 'text-amber-300 font-bold';
-        pill.textContent = '🔥 SURGE ACTIVE (300%-450%)';
+        pill.textContent = ' SURGE ACTIVE (300%-450%)';
         pill.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
       } else {
         normalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow transition-all flex items-center gap-1.5';
         surgeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white transition-all';
         label.textContent = 'Mid-Month (Normal Baseline Demand)';
         label.className = 'text-emerald-300 font-bold';
-        pill.textContent = '🟢 NORMAL TURNOVER';
+        pill.textContent = ' NORMAL TURNOVER';
         pill.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
       }
 
@@ -1193,7 +1193,7 @@
             </td>
             <td class="p-3 text-slate-300">
               ${dailyVelocity} ${item.unit}/day
-              ${isSurge ? '<span class="text-amber-400 text-[9px] block">⚡ SASSA Surge</span>' : ''}
+              ${isSurge ? '<span class="text-amber-400 text-[9px] block"> SASSA Surge</span>' : ''}
             </td>
             <td class="p-3">
               <span class="font-bold ${isUrgent ? 'text-rose-400' : 'text-emerald-400'}">
@@ -1210,7 +1210,7 @@
             <td class="p-3 text-right">
               ${isUrgent ? `
                 <button onclick="restockSku('${item.sku}', ${reorderUnits > 0 ? reorderUnits : 10})" class="px-2.5 py-1 rounded text-[10px] bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 font-bold transition-all">
-                  🚨 Restock (${reorderUnits > 0 ? reorderUnits : 10})
+                   Restock (${reorderUnits > 0 ? reorderUnits : 10})
                 </button>
               ` : `
                 <button onclick="restockSku('${item.sku}', 5)" class="px-2.5 py-1 rounded text-[10px] bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 transition-all">
@@ -1280,7 +1280,7 @@
               ` : `
                 <div class="flex items-center justify-between text-xs font-mono text-slate-500">
                   <span>Shelf life safe</span>
-                  <span class="text-emerald-400">✓ No action required</span>
+                  <span class="text-emerald-400"> No action required</span>
                 </div>
               `}
             </div>
@@ -1476,10 +1476,10 @@
       }
 
       if (validateLuhn(val)) {
-        luhnEl.textContent = '✓ Valid Card Checksum (Luhn Verified)';
+        luhnEl.textContent = ' Valid Card Checksum (Luhn Verified)';
         luhnEl.className = 'text-[10px] text-emerald-400 block mt-1';
       } else {
-        luhnEl.textContent = '✗ Invalid Card Checksum';
+        luhnEl.textContent = ' Invalid Card Checksum';
         luhnEl.className = 'text-[10px] text-rose-400 block mt-1';
       }
     }
@@ -1639,7 +1639,7 @@
       const html = `
         <div class="receipt-paper thermal-mode p-6 text-slate-900 w-full max-w-sm rounded shadow-2xl font-mono text-xs">
           <div class="text-center pb-3 border-b border-dashed border-stone-400">
-            <h2 class="font-extrabold text-sm uppercase tracking-wider">🏪 Soweto Smart Spaza</h2>
+            <h2 class="font-extrabold text-sm uppercase tracking-wider"> Soweto Smart Spaza</h2>
             <p class="text-[10px] text-stone-600">Vilakazi Street, Orlando West, Soweto</p>
             <p class="text-[10px] text-stone-600">VAT REG: 4920192841 &bull; Tel: (011) 935-1829</p>
           </div>
@@ -1885,8 +1885,8 @@
       const html = `
         <div class="a4-mode bg-white text-slate-900 p-8 rounded shadow-2xl font-mono text-xs w-full max-w-2xl">
           <div class="border-b-2 border-stone-800 pb-3 mb-4">
-            <h2 class="text-xl font-extrabold uppercase">🛒 Spaza Weekly Wholesaler Requisition</h2>
-            <p class="text-xs text-stone-600">Cycle Status: <strong>${isSurge ? '🔥 SASSA Grant Payout Week (High Surge)' : '🟢 Mid-Month Normal'}</strong></p>
+            <h2 class="text-xl font-extrabold uppercase"> Spaza Weekly Wholesaler Requisition</h2>
+            <p class="text-xs text-stone-600">Cycle Status: <strong>${isSurge ? ' SASSA Grant Payout Week (High Surge)' : ' Mid-Month Normal'}</strong></p>
             <p class="text-xs text-stone-600">Generated: ${today} &bull; Total Units: ${totalUnits} &bull; Estimated Spend: <strong>R${totalSpend.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</strong></p>
           </div>
 
